@@ -7,12 +7,7 @@ Parser.Default.ParseArguments<Options>(args)
         Template template = Template.Create(o.TemplatePath);
         Directory.CreateDirectory(o.OutputDir);
         string styleSheetName = Path.GetFileName(o.StylesheetPath);
-
-        string stylesheet = Path.Combine(o.OutputDir, styleSheetName);
-        if (!File.Exists(stylesheet))
-        {
-            File.Copy(o.StylesheetPath, stylesheet);
-        }
+        File.Copy(o.StylesheetPath, Path.Combine(o.OutputDir, styleSheetName), overwrite: true);
 
         if (o.Watch)
         {
