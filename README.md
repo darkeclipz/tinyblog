@@ -12,12 +12,13 @@ This project is mainly inspired by Hugo. However, after being rather frustrated 
 
 tinyblogs has the following features.
 
+ * CLI tool
  * Markdown support
  * HMTL support
  * highlight.js
  * MathJax
  * Mermaid
- * CLI tool
+ * And any other JS library you want to integrate...
 
 ## Installation
 
