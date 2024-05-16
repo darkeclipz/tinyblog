@@ -1,4 +1,6 @@
-﻿namespace TinyBlog;
+﻿using System.IO;
+
+namespace TinyBlog;
 
 public class Directory
 {
@@ -44,6 +46,12 @@ public class Directory
         {
             System.IO.File.Copy(newPath, newPath.Replace(AbsolutePath, to.AbsolutePath), replace);
         }
+    }
+
+    public void Clear()
+    {
+        System.IO.Directory.Delete(AbsolutePath, true);
+        System.IO.Directory.CreateDirectory(AbsolutePath);
     }
 
     public void Save(Post post)

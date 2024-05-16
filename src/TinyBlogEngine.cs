@@ -25,6 +25,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
         TableOfContents tableOfContents = new();
 
+        OutputDirectory.Clear();
+
         InputDirectory
             .EnumerateFiles(Filter.Markdown, SearchOption.TopDirectoryOnly)
             .ForEach(file =>

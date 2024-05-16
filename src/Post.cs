@@ -13,15 +13,17 @@ public class PostHeader
     public DateTimeOffset Date { get; private set; }
     public string Author { get; private set; } = string.Empty;
     public bool IsHidden { get; private set; } = false;
+    public bool IsPublished { get; private set; } = true;
 
-    public static PostHeader Create(string title, string author, string date, string hidden)
+    public static PostHeader Create(string title, string author, string date, string hidden, string published)
     {
         return new PostHeader
         {
             Title = title,
             Author = author,
             Date = DateTimeOffset.Parse(date),
-            IsHidden = hidden == "true"
+            IsHidden = hidden == "true",
+            IsPublished = published == "true"
         };
     }
 }
@@ -88,14 +90,19 @@ public class Post
                     hidden = "false";
                 }
 
-                Header = PostHeader.Create(title, author, date, hidden);
+                if (!TryGetProperty("published", header, out string published))
+                {
+                    published = "true";
+                }
+
+                Header = PostHeader.Create(title, author, date, hidden, published);
             }
 
             Markdown = new Markdown(Markdown.Value[(end + 3)..].Trim());
         }
         else
         {
-            Header = PostHeader.Create("Untitled post", settings.DefaultAuthor, DateTimeOffset.Now.ToString(), "false");
+            Header = PostHeader.Create("Untitled post", settings.DefaultAuthor, DateTimeOffset.Now.ToString(), hidden: "false", published: "true");
         }
 
         return this;
@@ -109,7 +116,10 @@ public class Post
 
     public void SaveTo(Directory directory)
     {
-        directory.Save(this);
+        if (Header?.IsPublished ?? true)
+        {
+            directory.Save(this);
+        }
     }
 
     public static Post From(File file)
