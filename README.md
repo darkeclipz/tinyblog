@@ -1,4 +1,4 @@
-# tiny-blog
+![Logo](logo/banner.png)
 
 This is a really really tiny blog, that is generated from Markdown files.
 
