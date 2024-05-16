@@ -3,7 +3,12 @@ using CommandLine;
 
 CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOptions>(args)
     .MapResult(
-        (InitOptions opts) => TinyBlogEngine.Init(opts),
+        (InitOptions opts) =>
+        {
+            TinyBlogEngine.Init(opts);
+            Run(watch: false);
+            return 0;
+        },
         (BuildOptions opts) => Run(watch: false),
         (WatchOptions opts) => Run(watch: true),
         errs => 2);

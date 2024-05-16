@@ -18,8 +18,5 @@ public class InitOptions
 [Verb("build", HelpText = "Build the blog in the current directory.")]
 class BuildOptions;
 
-[Verb("watch", HelpText = "Watch the current directory for changes and build.")]
+[Verb("watch", HelpText = "Watch the current directory for changes and build the changed file.")]
 class WatchOptions;
-
-[Verb("version", HelpText = "Display the version.")]
-class VersionOptions;

@@ -10,7 +10,7 @@ public class TableOfContents
         Posts.Add(post);
     }
 
-    public TableOfContents InjectIn(Template template, TinyBlogSettings settings)
+    public TableOfContents InsertIn(Template template, TinyBlogSettings settings)
     {
         Html = template.Html
             .Replace("title", "Table of contents")

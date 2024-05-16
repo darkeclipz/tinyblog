@@ -26,11 +26,6 @@ public class File
         return System.IO.File.ReadAllText(AbsolutePath);
     }
 
-    public bool Exists()
-    {
-        return System.IO.File.Exists(AbsolutePath);
-    }
-
     public static File Create(string path)
     {
         return new File

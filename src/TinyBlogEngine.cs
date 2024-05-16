@@ -7,7 +7,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 {
     readonly Directory InputDirectory = Directory.Create(settings.InputDirectory);
     readonly Directory OutputDirectory = Directory.Create(settings.OutputDirectory);
-    readonly Template Template = Template.Create(File.Create(Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)));
+    readonly Template Template = Template.Create(File.Create(System.IO.Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)));
     readonly TinyBlogSettings Settings = TinyBlogSettings.Validate(settings);
 
     public void Build()
@@ -41,7 +41,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         if (Settings.GenerateTableOfContents)
         {
             tableOfContents
-                .InjectIn(Template, Settings)
+                .InsertIn(Template, Settings)
                 .SaveTo(OutputDirectory);
 
             Log(LogCategory.Info, "Generated table of contents.");
@@ -80,14 +80,14 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         Console.ReadKey();
     }
 
-    public static int Init(InitOptions options)
+    public static void Init(InitOptions options)
     {
         string currentWorkingDirectory = System.IO.Directory.GetCurrentDirectory();
-        string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+        string assemblyDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
             ?? throw new InvalidOperationException();
 
-        var currentDirectory = TinyBlog.Directory.Create(currentWorkingDirectory);
-        var assemblyDir = TinyBlog.Directory.Create(assemblyDirectory);
+        var currentDirectory = Directory.Create(currentWorkingDirectory);
+        var assemblyDir = Directory.Create(assemblyDirectory);
 
         if (!options.Force)
         {
@@ -97,19 +97,17 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         var defaultSettings = TinyBlogSettings.CreateDefaultConfiguration(currentDirectory, options);
         Log(LogCategory.Info, "Creating default configuration file.");
 
-        var sourceInputDirectory = TinyBlog.Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.InputDirectory));
-        var targetInputDirectory = TinyBlog.Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.InputDirectory));
+        var sourceInputDirectory = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.InputDirectory));
+        var targetInputDirectory = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.InputDirectory));
         sourceInputDirectory.CopyFilesRecursively(targetInputDirectory, replace: options.Force);
         Log(LogCategory.Copy, "Creating src directory.");
 
-        var sourceThemes = TinyBlog.Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.ThemesFolder));
-        var targetThemes = TinyBlog.Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.ThemesFolder));
+        var sourceThemes = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.ThemesFolder));
+        var targetThemes = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.ThemesFolder));
         sourceThemes.CopyFilesRecursively(targetThemes, replace: options.Force);
         Log(LogCategory.Copy, "Creating themes directory.");
 
         Log(LogCategory.Success, "Initialized blog.");
-
-        return 0;
     }
 
     public static void Version()
