@@ -35,10 +35,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
                     .InsertIn(Template)
                     .AddTo(tableOfContents)
                     .SaveTo(OutputDirectory)
-                    .OnSuccess(() =>
-                    {
-                        Logger.LogBuild(file.AbsolutePath);
-                    });
+                    .OnSuccess(() => Logger.LogBuild(file.AbsolutePath));
             });
 
         if (Settings.GenerateTableOfContents)
