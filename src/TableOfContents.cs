@@ -33,7 +33,7 @@ public class TableOfContents
             .OrderByDescending(p => p.Header!.Date)
             .Select(p => $"<li><a href=\"{p.File.FileName.Name}.html\">{p.Header!.Title}</a></li>");
 
-        return $"<h1>{blogTitle}</h1><hr/><h2>Table of contents</h2><ul>{string.Join("", posts)}</ul>";
+        return $"<h2>Table of contents</h2><ul>{string.Join("", posts)}</ul>";
     }
 
     public override string ToString() => Html?.Value ?? string.Empty;
