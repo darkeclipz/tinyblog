@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishAot>false</PublishAot>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <Title>tinyblog</Title>
     <Description>A tiny blogging engine.</Description>
     <Copyright>Lars Rotgers</Copyright>
@@ -16,6 +16,7 @@
     <RepositoryUrl>https://github.com/darkeclipz/tinyblog</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>blog</PackageTags>
+    <FileVersion>2.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-![Logo](logo/banner.png)
+![Logo](logo/github-logo.png)
 
 This is a really really tiny blog, that is generated from Markdown files.
 
