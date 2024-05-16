@@ -125,12 +125,15 @@ public class Post
         return this;
     }
 
-    public void SaveTo(Directory directory)
+    public FileSaveResult SaveTo(Directory directory)
     {
         if (Header?.IsPublished ?? true)
         {
             directory.Save(this);
+            return FileSaveResult.Success;
         }
+
+        return FileSaveResult.Failed;
     }
 
     public static Post From(File file)
@@ -143,4 +146,29 @@ public class Post
     }
 
     public override string ToString() => Html?.Value ?? string.Empty;
+}
+
+public class FileSaveResult
+{
+    private bool IsSuccess { get; set; }
+    public static readonly FileSaveResult Success = Create(true);
+    public static readonly FileSaveResult Failed = Create(false);
+
+    private static FileSaveResult Create(bool success)
+    {
+        return new FileSaveResult()
+        {
+            IsSuccess = success
+        };
+    }
+
+    public FileSaveResult OnSuccess(Action action)
+    {
+        if (IsSuccess)
+        {
+            action();
+        }
+
+        return this;
+    }
 }
