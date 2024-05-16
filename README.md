@@ -1,36 +1,95 @@
 ![Logo](logo/github-logo.png)
 
-This is a really really tiny blog, that is generated from Markdown files.
+Let's create the worlds smallest blog engine, that yet packs a punch.
 
-## Usage
+## Philosophy behind tinyblog
 
-Create a directory in which you want your blog, and create a folder `articles` in there. Drop the executable in the folder, or add it to your path.
+The philosophy behind tinyblog is that it should be as simple and elegant as possible, but yet provide capable functionalities.
 
-### Commands
+This project is mainly inspired by Hugo. However, after being rather frustrated with how advanced Hugo can be, I opted to create a barebone version of it. It is not goal to recreate Hugo! The **goal is to create a blogging engine that is easy to understand and simple to maintain**. You should be able to understand how it works and get a blog up and running in less than 5 minutes.
 
+## Features
+
+tinyblogs has the following features.
+
+ * CLI tool
+ * Markdown support
+ * HMTL support
+ * highlight.js
+ * MathJax
+ * Mermaid
+ * And any other JS library you want to integrate...
+
+## Installation
+
+Installing tinyblog is as easy as following the steps below.
+
+ 1. Download the latest release and extract this into a folder somewhere.
+ 3. Add that directory to your `PATH` environment variable.
+ 4. Create a new empty folder and run `tinyblog init` .
+ 5. Configure your blog in the `settings.yml` file.
+ 6. Build the blog with `tinyblog build`.
+   
+Delete the directory to uninstall it.
+
+## Releases
+
+ * [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.0.0/tinyblog-2.0.0.zip)
+
+## CLI commands
+
+The tinyblog CLI supports the following commands:
+
+ 1. `tinyblog init` initializes a new blog in the current directory.
+ 2. `tinyblog build` builds the blog in the current directory.
+ 3. `tinyblog watch` watches the current directory for any changes and builds the change file.
+
+**Warning:** Theme changes require a restart of the watch process.
+
+## Directory structure
+
+The directory structure of a blog is defined in the following way:
+
+```text
+$ root
+├── settings.yml
+├── src
+│   └── post1.md
+├── dist
+│   ├── index.html
+│   └── post1.html
+└── themes
+    └── default
+        ├── template.html
+        └── style.css
 ```
-Copyright (C) 2024 TinyBlog
 
-  -v, --verbose       Set output to verbose messages.
+ * The `settings.yml` file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.
+ * All the files from `src` are copied to the `dist` folder.
+ * All files with the `.md` extensions are converted to `.html`.
+ * The `template.html` is used for the given theme.
+ * The `style.css` is copied from the theme folder into the `includes` folder.
 
-  -t, --template      Path to the template file.
+## Open bugs
 
-  -w, --watch         Watch for changes in the articles directory.
+  1. Changes to `template.html` are not reflected without restarting the application while in `watch` mode.
+  2. The version displayed with `version` is incorrect.
 
-  --input-dir         Path to the input directory.
+## Used packages
 
-  --output-dir        Path to the output directory.
+TinyBlog would not have been possible without the following open source projects:
+ 
+ * **Markdig** for parsing Markdown files and converting them to HTML.
+ * **CommandLineParser** for generating an easy CLI tool with commands and options.
+ * **highlight.js** for syntax highlighting in code blocks.
+ * **MathJax** for formatting and displaying mathematical equations.
+ * **Mermaid** for formatting and displaying diagrams.
+ * **YamlDotNet** for settings management.
 
-  -s, --stylesheet    Path to the stylesheet file.
+## Constributions
 
-  --help              Display this help screen.
+Feel free to create a pull request. 😊
 
-  --version           Display version information.
-```
+## Licence
 
-## Defaults
-
- * The default input directory is `articles`, any `*.md` files are converted into HTML.
- * The default output directory is `static`.
- * The default template that is used is `layout.html`.
- * The default stylesheet that is used is `default.css`.
+TBD.
