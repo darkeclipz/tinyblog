@@ -21,6 +21,14 @@
 <ul>
 <li>Removed the h1 header from the table of contents.</li>
 <li>After initializing a blog, a build is always created.</li>
+<li>Added a <code>published</code> parameter to the post header, and a post is only saved if it is publish.
+<ul>
+<li>A post is published by default.</li>
+</ul>
+</li>
+<li>The output directory is now cleared before building.</li>
+<li>Watching will now rebuild the entire blog and copy the theme changes as well.</li>
+<li>Changed the log colors to be less annoying.</li>
 </ul>
 <h2>tinyblog-2.0.0</h2>
 <p>Release 2.0.0 features a complete rewrite of the blogging engine. This is done to streamline the code and provide a good baseline to add the following new functionality:</p>
@@ -57,7 +65,7 @@
     </div>
 
     <div class="last-update">
-        Last update: 5/16/2024 10:44:33 PM +02:00
+        Last update: 17/05/2024 00:00:08 +02:00
     </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>

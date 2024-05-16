@@ -7,8 +7,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 {
     readonly Directory InputDirectory = Directory.Create(settings.InputDirectory);
     readonly Directory OutputDirectory = Directory.Create(settings.OutputDirectory);
-    readonly Template Template = Template.Create(File.Create(System.IO.Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)));
     readonly TinyBlogSettings Settings = TinyBlogSettings.Validate(settings);
+    Template Template = Template.Create(File.Create(System.IO.Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)));
 
     public void Build()
     {
@@ -20,12 +20,11 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         Guard.Against.MissingTemplate(Settings);
         Guard.Against.MissingStylesheet(Settings);
 
+        OutputDirectory.Clear();
         CopyStaticContent();
         CopyThemeStylesheet();
 
         TableOfContents tableOfContents = new();
-
-        OutputDirectory.Clear();
 
         InputDirectory
             .EnumerateFiles(Filter.Markdown, SearchOption.TopDirectoryOnly)
@@ -55,27 +54,15 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
     public void Watch()
     {
-        Guard.Against.MissingThemeFolder(Settings);
-        Guard.Against.MissingTheme(Settings);
-        Guard.Against.MissingTemplate(Settings);
-        Guard.Against.MissingStylesheet(Settings);
-
-        CopyStaticContent();
-        CopyThemeStylesheet();
+        Build();
 
         using var watcher = new System.IO.FileSystemWatcher(Settings.InputDirectory, Filter.Markdown);
         watcher.EnableRaisingEvents = true;
         watcher.Changed += (sender, e) =>
         {
-            Template template = Template.Create(File.Create(Path.Combine(Settings.ThemesFolder, Settings.Theme, Settings.TemplateName)));
+            Template = Template.Create(File.Create(Path.Combine(Settings.ThemesFolder, Settings.Theme, Settings.TemplateName)));
             System.Threading.Thread.Sleep(250); // Wait for file to unlock, yes I know...
-
-            Post.From(File.Create(e.FullPath))
-                .GetHeaderOrDefault(Settings)
-                .InsertIn(template)
-                .SaveTo(OutputDirectory);
-
-            Log(LogCategory.Build, e.FullPath);
+            Build();
         };
 
         Log(LogCategory.Watch, "Watching for changes. Press any key to exit.");
@@ -144,18 +131,15 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         Console.ForegroundColor = ConsoleColor.Cyan;
         if (category == LogCategory.Success)
         {
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
         }
         else if (category == LogCategory.Warning)
         {
-            Console.BackgroundColor = ConsoleColor.Yellow;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Yellow;
         }
         else if (category == LogCategory.Error)
         {
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Red;
         }
         Console.Write($"{category.ToString().ToLower()}");
         Console.ResetColor();

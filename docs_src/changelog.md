@@ -10,6 +10,11 @@ This is a list of upcoming changes that have not yet been released.
 
  * Removed the h1 header from the table of contents.
  * After initializing a blog, a build is always created.
+ * Added a `published` parameter to the post header, and a post is only saved if it is publish.
+   * A post is published by default.
+ * The output directory is now cleared before building.
+ * Watching will now rebuild the entire blog and copy the theme changes as well.
+ * Changed the log colors to be less annoying.
 
 ## tinyblog-2.0.0
 
