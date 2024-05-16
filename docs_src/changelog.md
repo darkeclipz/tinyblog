@@ -1,16 +1,27 @@
 ---
 title: Change log
 author: Lars Rotgers
-date: 2024-05-16T08:52:30+0100
 hidden: false
 ---
 
-<img src="logo.png" style="max-width: 64px;" alt="Logo of tinyblog" />
+## tinyblog-2.0.0
 
-# tinyblog
-### Let's build the smallest blog engine you can imagine
+Release 2.0.0 features a complete rewrite of the blogging engine. This is done to streamline the code and provide a good baseline to add the following new functionality:
 
----
+  * There is a newly defined directory structure.
+  * Support for different themes.
+  * A `settings.yml` file in which the blog settings and theme can be configured.
+  * Added a table of contents generator.
+  * Improved the CLI with a `init`, `build,` and `watch` command.
+  * Improved the CLI with log messages.
+  * Improved validation and exception handling with meaningful errors.
+  * Usage of `DateTimeOffset` for improved publish dates.
+  * All the static files in the `src` directory are now copied to the `dist` directory.
+  * A post can now be `hidden`, so that it doesn't show up in the table of contents.
+
+Initially there was the idea to also add plugin support for e.g. Mathjax and highlight.js. However, since this can be configured in the `template.html` file, there isn't really any added value by integrating this into tinyblog. If you want more templates, just add the `link` and `script` tags to the `template.html` in your theme.
+
+A second idea was to add categories by allowing sub folders in the `src` directory. This idea has been postponed for now. If the need arises this will be implemented in a later release.
 
 ## tinyblog-1.0.0
 

@@ -11,10 +11,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body class="fadeIn">
-    <img src="logo.png" style="max-width: 64px;" alt="Logo of tinyblog" />
-<h1>tinyblog</h1>
-<h3>Let's build the smallest blog engine you can imagine</h3>
-<hr />
+    <h1>tinyblog</h1>
+    <h3>Let's build the smallest blog engine you can imagine</h3>
+
+    <hr/>
+
+    <h2>tinyblog-2.0.0</h2>
+<p>Release 2.0.0 features a complete rewrite of the blogging engine. This is done to streamline the code and provide a good baseline to add the following new functionality:</p>
+<ul>
+<li>There is a newly defined directory structure.</li>
+<li>Support for different themes.</li>
+<li>A <code>settings.yml</code> file in which the blog settings and theme can be configured.</li>
+<li>Added a table of contents generator.</li>
+<li>Improved the CLI with a <code>init</code>, <code>build,</code> and <code>watch</code> command.</li>
+<li>Improved the CLI with log messages.</li>
+<li>Improved validation and exception handling with meaningful errors.</li>
+<li>Usage of <code>DateTimeOffset</code> for improved publish dates.</li>
+<li>All the static files in the <code>src</code> directory are now copied to the <code>dist</code> directory.</li>
+<li>A post can now be <code>hidden</code>, so that it doesn't show up in the table of contents.</li>
+</ul>
+<p>Initially there was the idea to also add plugin support for e.g. Mathjax and highlight.js. However, since this can be configured in the <code>template.html</code> file, there isn't really any added value by integrating this into tinyblog. If you want more templates, just add the <code>link</code> and <code>script</code> tags to the <code>template.html</code> in your theme.</p>
+<p>A second idea was to add categories by allowing sub folders in the <code>src</code> directory. This idea has been postponed for now. If the need arises this will be implemented in a later release.</p>
 <h2>tinyblog-1.0.0</h2>
 <p>The initial release of tinyblog contains the following features:</p>
 <ul>
@@ -29,7 +46,13 @@
 
     <hr />
     
-    <center>Copyright 2024. tinyblog.</center>
+    <div>
+        <center>Copyright 2024. tinyblog.</center> 
+    </div>
+
+    <div class="last-update">
+        Last update: 5/16/2024 10:28:08 PM +02:00
+    </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script>
@@ -48,5 +71,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     
     <script>hljs.highlightAll();</script>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
 </body>
 </html>

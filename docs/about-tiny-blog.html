@@ -11,69 +11,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body class="fadeIn">
-    <img src="logo.png" style="max-width: 64px;" alt="Logo of tinyblog" />
-<h1>tinyblog</h1>
-<h3>Let's build the smallest blog engine you can imagine</h3>
-<hr />
-<h2>Philosophy</h2>
+    <h1>tinyblog</h1>
+    <h3>Let's build the smallest blog engine you can imagine</h3>
+
+    <hr/>
+
+    <h2>Philosophy behind tinyblog</h2>
 <p>The philosophy behind tinyblog is that it should be as simple and elegant as possible, but yet provide capable functionalities.</p>
 <p>This project is mainly inspired by Hugo. However, after being rather frustrated with how advanced Hugo can be, I opted to create a barebone version of it. It is not goal to recreate Hugo! The <strong>goal is to create a blogging engine that is easy to understand and simple to maintain</strong>. You should be able to understand how it works and get a blog up and running in less than 5 minutes.</p>
-<h2>Upcoming features</h2>
+<h2>Installation</h2>
+<p>Installing tinyblog is as easy as following the steps below.</p>
 <ol>
-<li>Use the file name of the <code>.md</code> file for the <code>.html</code> file. This ensures that the file name doesn't change if the title of the post is changed.</li>
-<li>Parse the date of a post properly with <code>DateTimeOffset</code>. Currently the time zone is missing.</li>
-<li>Add a <code>blog.yml</code> settings file, that will contain default values and settings for the blog.
+<li>Download the latest release and extract this into a folder somewhere.</li>
+<li>Add that directory to your <code>PATH</code> environment variable.</li>
+<li>Create a new empty folder and run <code>tinyblog init</code> .</li>
+<li>Configure your blog in the <code>settings.yml</code> file.</li>
+<li>Build the blog with <code>tinyblog build</code>.</li>
+</ol>
+<p>Delete the directory to uninstall it.</p>
+<h2>CLI commands</h2>
+<p>The tinyblog CLI supports the following commands:</p>
 <ol>
-<li><code>blogName</code>, <code>defaultAuthor</code>, <code>includeMathJax</code>, <code>includeHighlightJs</code>, <code>...</code>.</li>
+<li><code>tinyblog init</code> initializes a new blog in the current directory.</li>
+<li><code>tinyblog build</code> builds the blog in the current directory.</li>
+<li><code>tinyblog watch</code> watches the current directory for any changes and builds the change file.</li>
 </ol>
-</li>
-<li>Add commands to the console application, such as:
-<ol>
-<li><code>init</code>: initialize a directory for a blog, by adding the <code>layout.html</code>, <code>default.css</code> files and generating the required directory, as well as an example post to get started.</li>
-<li><code>build</code>: build the blog from the Markdown files into HTML files.</li>
-<li><code>&lt;default&gt;</code>: return the help information.</li>
-</ol>
-</li>
-<li>Improved exception handling to give meaningful error messages to the user, and how the can be resolved.</li>
-<li>Add a time stamp to the logging output in the console.</li>
-<li>Make the plugins modular with a <code>{{ script }}</code> section.</li>
-<li>Template validation; give warnings if some required placeholders are missing, such as the <code>script</code> tag.</li>
-<li>Allow the creation of categories by creating folders and sub folders in the articles directory.</li>
-<li>Implement support for images and other auxiliary files that need to be copied to the output directory. If for example, an image is included in a Markdown file, the relative path to the image must be the same for the output HTML file. Perhaps copy everything that is in the <code>articles</code> folder.</li>
-<li>Allow a post to be <code>hidden</code>, which means that it will not be included in a table of contents file. This enables a user to create <em>hidden pages</em>, such as a home, about me, and contact page. In the layout itself can then be a menu, and the pages that can be accessed from the menu, are not included in the blog itself. This allows a user to create a simple website with the blog engine.</li>
-<li>Implement themes. A theme consists of a <code>layout.html</code> and <code>theme.css</code> file.</li>
-<li>Format the HTML output (this can be done with the C# XML parser):
-<ol>
-<li><code>System.Xml.Linq.XElement.Parse(html).ToString()</code>.</li>
-</ol>
-</li>
-</ol>
+<p><strong>Warning:</strong> Theme changes require a restart of the watch process.</p>
 <h2>Directory structure</h2>
 <p>The directory structure of a blog is defined in the following way:</p>
-<pre><code>$ root
-├── blog.yml
+<pre><code class="language-text">$ root
+├── settings.yml
 ├── src
-│   ├── static
-│   │   └── image1.png
 │   └── post1.md
 ├── dist
-│   ├── includes
-│   │   └── style.css
-│   ├── static
-│   │   └── image1.png
 │   ├── index.html
 │   └── post1.html
 └── themes
     └── default
-        ├── layout.html
+        ├── template.html
         └── style.css
 </code></pre>
 <ul>
-<li>The <code>blog.yml</code> file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.</li>
+<li>The <code>settings.yml</code> file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.</li>
 <li>All the files from <code>src</code> are copied to the <code>dist</code> folder.</li>
 <li>All files with the <code>.md</code> extensions are converted to <code>.html</code>.</li>
-<li>It is not allowed to have a folder called <code>includes</code> in the <code>src</code> folder.</li>
-<li>The <code>layout.html</code> is used for the given theme.</li>
+<li>The <code>template.html</code> is used for the given theme.</li>
 <li>The <code>style.css</code> is copied from the theme folder into the <code>includes</code> folder.</li>
 </ul>
 <h2>HTML support</h2>
@@ -101,6 +83,7 @@ It enables users to color outside of the lines that the blog engine provides the
     return num1;
 }
 </code></pre>
+<p>tinyblog automatically converts a code block to a <code>pre</code> block with the correct class for highlight.js. Thanks Markdig!</p>
 <h2>MathJax support</h2>
 <p>MathJax has also been included. This allows for the rendering of mathematical equations, such as the following:</p>
 <p>$$
@@ -108,12 +91,7 @@ It enables users to color outside of the lines that the blog engine provides the
 $$</p>
 <p>It is also possible to use inline math with the \$ sign. For example, $e^{i\pi} = -1$.</p>
 <h2>Mermaid support</h2>
-<pre><code class="language-mermaid">graph TD;
-    A--&gt;B;
-    A--&gt;C;
-    B--&gt;D;
-    C--&gt;D;
-</code></pre>
+<p>It is also possible to include Mermaid diagrams if the module has been imported in the <code>template.html</code> file.</p>
 <pre class="mermaid">
 graph TD
     A[Enter Chart Definition] --> B(Preview)
@@ -124,39 +102,39 @@ graph TD
     D --> F[Save Image and Code]
     F --> B
 </pre>
-<script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
-</script>
+<p>Cool, huh? This is actually possible because of the HTML support.</p>
 <h2>Including HTML fragments</h2>
-<p>Research if this is a good idea. In my opinion it will defeat the purpose of being a simple blog engine.
+<p>We still need to research if this is a good idea. In my opinion it will defeat the purpose of being a simple blog engine.
 Additionally it is cool to have a Hugo like syntax where you can for example, select the top 5 blog posts and generate a list of links based on attributes of a post. However, in this case, one might just hop over to Hugo instead of using blog engine. Don't try to be something you aren't. And we aren't building Hugo, we are building a super simple blog engine.</p>
-<h2>Conversion pipeline</h2>
-<pre class="mermaid">
-graph TD
-    CreateDirectories --> CopyStylesheets --> CopyStaticContent
-    ReadTemplate --> AppendLinks --> AppendScripts
-    ReadPost --> ReadHeader --> ReplacePlaceholders --> SaveToFile
-</pre>
 <h2>Open bugs</h2>
 <ol>
-<li>Symbols are not correctly removed from the blog post title when it is converted into a file name. This is due to not using the file name for the output file. (TODO-1).</li>
-<li>Changes to <code>layout.html</code> are not reflected without restarting the application while in <code>--watch</code> mode.</li>
+<li>Changes to <code>template.html</code> are not reflected without restarting the application while in <code>watch</code> mode.</li>
 </ol>
-<h2>Used</h2>
+<h2>Used packages</h2>
 <p>TinyBlog would not have been possible without the following open source projects:</p>
 <ul>
-<li><strong>Markdig</strong>; for parsing Markdown files and converting them to HTML.</li>
-<li><strong>CommandLineParser</strong>; for generating an easy CLI tool with commands and options.</li>
-<li><strong>highlight.js</strong>; for syntax highlighting in code blocks.</li>
-<li><strong>MathJax</strong>; for formatting and displaying mathematical equations.</li>
-<li><strong>Mermaid</strong>; for formatting and displaying diagrams.</li>
+<li><strong>Markdig</strong> for parsing Markdown files and converting them to HTML.</li>
+<li><strong>CommandLineParser</strong> for generating an easy CLI tool with commands and options.</li>
+<li><strong>highlight.js</strong> for syntax highlighting in code blocks.</li>
+<li><strong>MathJax</strong> for formatting and displaying mathematical equations.</li>
+<li><strong>Mermaid</strong> for formatting and displaying diagrams.</li>
+<li><strong>YamlDotNet</strong> for settings management.</li>
 </ul>
+<h2>Constributions</h2>
+<p>Feel free to create a pull request. 😊</p>
+<h2>Licence</h2>
+<p>TBD.</p>
 
 
     <hr />
     
-    <center>Copyright 2024. tinyblog.</center>
+    <div>
+        <center>Copyright 2024. tinyblog.</center> 
+    </div>
+
+    <div class="last-update">
+        Last update: 5/16/2024 10:39:00 PM +02:00
+    </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script>
@@ -175,5 +153,10 @@ graph TD
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     
     <script>hljs.highlightAll();</script>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
 </body>
 </html>

@@ -56,3 +56,8 @@ hr {
 .fadeIn {
     animation: fadeIn 0.33s;
 }
+
+.last-update {
+    color: #989898;
+    text-align: center;
+}
