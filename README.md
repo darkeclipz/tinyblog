@@ -73,6 +73,7 @@ $ root
 ## Open bugs
 
   1. Changes to `template.html` are not reflected without restarting the application while in `watch` mode.
+  2. The version displayed with `version` is incorrect.
 
 ## Used packages
 
