@@ -1,0 +1,20 @@
+:root {
+    --max-width: 80ch;
+}
+
+body {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 6ch;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1;
+}
+
+img {
+    margin: 0 auto;
+    max-width: var(--max-width);
+    max-height: var(--max-width);
+}

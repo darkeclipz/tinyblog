@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's build the smallest blog engine you can imagine</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="fadeIn">
+    <img src="logo.png" style="max-width: 64px;" alt="Logo of tinyblog" />
+<h1>tinyblog</h1>
+<h3>Let's build the smallest blog engine you can imagine</h3>
+<hr />
+<h2>Philosophy</h2>
+<p>The philosophy behind tinyblog is that it should be as simple and elegant as possible, but yet provide capable functionalities.</p>
+<p>This project is mainly inspired by Hugo. However, after being rather frustrated with how advanced Hugo can be, I opted to create a barebone version of it. It is not goal to recreate Hugo! The <strong>goal is to create a blogging engine that is easy to understand and simple to maintain</strong>. You should be able to understand how it works and get a blog up and running in less than 5 minutes.</p>
+<h2>Upcoming features</h2>
+<ol>
+<li>Use the file name of the <code>.md</code> file for the <code>.html</code> file. This ensures that the file name doesn't change if the title of the post is changed.</li>
+<li>Parse the date of a post properly with <code>DateTimeOffset</code>. Currently the time zone is missing.</li>
+<li>Add a <code>blog.yml</code> settings file, that will contain default values and settings for the blog.
+<ol>
+<li><code>blogName</code>, <code>defaultAuthor</code>, <code>includeMathJax</code>, <code>includeHighlightJs</code>, <code>...</code>.</li>
+</ol>
+</li>
+<li>Add commands to the console application, such as:
+<ol>
+<li><code>init</code>: initialize a directory for a blog, by adding the <code>layout.html</code>, <code>default.css</code> files and generating the required directory, as well as an example post to get started.</li>
+<li><code>build</code>: build the blog from the Markdown files into HTML files.</li>
+<li><code>&lt;default&gt;</code>: return the help information.</li>
+</ol>
+</li>
+<li>Improved exception handling to give meaningful error messages to the user, and how the can be resolved.</li>
+<li>Add a time stamp to the logging output in the console.</li>
+<li>Make the plugins modular with a <code>{{ script }}</code> section.</li>
+<li>Template validation; give warnings if some required placeholders are missing, such as the <code>script</code> tag.</li>
+<li>Allow the creation of categories by creating folders and sub folders in the articles directory.</li>
+<li>Implement support for images and other auxiliary files that need to be copied to the output directory. If for example, an image is included in a Markdown file, the relative path to the image must be the same for the output HTML file. Perhaps copy everything that is in the <code>articles</code> folder.</li>
+<li>Allow a post to be <code>hidden</code>, which means that it will not be included in a table of contents file. This enables a user to create <em>hidden pages</em>, such as a home, about me, and contact page. In the layout itself can then be a menu, and the pages that can be accessed from the menu, are not included in the blog itself. This allows a user to create a simple website with the blog engine.</li>
+<li>Implement themes. A theme consists of a <code>layout.html</code> and <code>theme.css</code> file.</li>
+<li>Format the HTML output (this can be done with the C# XML parser):
+<ol>
+<li><code>System.Xml.Linq.XElement.Parse(html).ToString()</code>.</li>
+</ol>
+</li>
+</ol>
+<h2>Directory structure</h2>
+<p>The directory structure of a blog is defined in the following way:</p>
+<pre><code>$ root
+├── blog.yml
+├── src
+│   ├── static
+│   │   └── image1.png
+│   └── post1.md
+├── dist
+│   ├── includes
+│   │   └── style.css
+│   ├── static
+│   │   └── image1.png
+│   ├── index.html
+│   └── post1.html
+└── themes
+    └── default
+        ├── layout.html
+        └── style.css
+</code></pre>
+<ul>
+<li>The <code>blog.yml</code> file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.</li>
+<li>All the files from <code>src</code> are copied to the <code>dist</code> folder.</li>
+<li>All files with the <code>.md</code> extensions are converted to <code>.html</code>.</li>
+<li>It is not allowed to have a folder called <code>includes</code> in the <code>src</code> folder.</li>
+<li>The <code>layout.html</code> is used for the given theme.</li>
+<li>The <code>style.css</code> is copied from the theme folder into the <code>includes</code> folder.</li>
+</ul>
+<h2>HTML support</h2>
+<p>Thanks to the fantastic Markdig package, all the HTML that is within a Markdown file, is correctly added to the HTML file as well.
+This seemingly small feature, has a huge impact on the project.
+It enables users to color outside of the lines that the blog engine provides them, and gives them the option to do whatever they want by using HTML and JS.</p>
+<p>One of these examples is the button that we have included here:</p>
+<p><button id="button1">Click me!</button></p>
+<script>
+    document.getElementById("button1").addEventListener("click", () => alert("Pretty cool, huh!?"));
+</script>
+<h2>highlight.js support</h2>
+<p>highlight.js has been included to improve the readability of code. Note that by default no extra languages have been included, and the <code>github</code> theme is used. The <code>settings.yml</code> file should include a few properties that allow a user to specify extra languages that need to be included, and to switch the theme more easily.</p>
+<pre><code class="language-csharp">static int GCD(int num1, int num2)
+{
+    int remainder;
+
+    while (num2 != 0)
+    {
+        remainder = num1 % num2;
+        num1 = num2;
+        num2 = remainder;
+    }
+
+    return num1;
+}
+</code></pre>
+<h2>MathJax support</h2>
+<p>MathJax has also been included. This allows for the rendering of mathematical equations, such as the following:</p>
+<p>$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$</p>
+<p>It is also possible to use inline math with the \$ sign. For example, $e^{i\pi} = -1$.</p>
+<h2>Mermaid support</h2>
+<pre><code class="language-mermaid">graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+</code></pre>
+<pre class="mermaid">
+graph TD
+    A[Enter Chart Definition] --> B(Preview)
+    B --> C{decide}
+    C --> D[Keep]
+    C --> E[Edit Definition]
+    E --> B
+    D --> F[Save Image and Code]
+    F --> B
+</pre>
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+</script>
+<h2>Including HTML fragments</h2>
+<p>Research if this is a good idea. In my opinion it will defeat the purpose of being a simple blog engine.
+Additionally it is cool to have a Hugo like syntax where you can for example, select the top 5 blog posts and generate a list of links based on attributes of a post. However, in this case, one might just hop over to Hugo instead of using blog engine. Don't try to be something you aren't. And we aren't building Hugo, we are building a super simple blog engine.</p>
+<h2>Conversion pipeline</h2>
+<pre class="mermaid">
+graph TD
+    CreateDirectories --> CopyStylesheets --> CopyStaticContent
+    ReadTemplate --> AppendLinks --> AppendScripts
+    ReadPost --> ReadHeader --> ReplacePlaceholders --> SaveToFile
+</pre>
+<h2>Open bugs</h2>
+<ol>
+<li>Symbols are not correctly removed from the blog post title when it is converted into a file name. This is due to not using the file name for the output file. (TODO-1).</li>
+<li>Changes to <code>layout.html</code> are not reflected without restarting the application while in <code>--watch</code> mode.</li>
+</ol>
+<h2>Used</h2>
+<p>TinyBlog would not have been possible without the following open source projects:</p>
+<ul>
+<li><strong>Markdig</strong>; for parsing Markdown files and converting them to HTML.</li>
+<li><strong>CommandLineParser</strong>; for generating an easy CLI tool with commands and options.</li>
+<li><strong>highlight.js</strong>; for syntax highlighting in code blocks.</li>
+<li><strong>MathJax</strong>; for formatting and displaying mathematical equations.</li>
+<li><strong>Mermaid</strong>; for formatting and displaying diagrams.</li>
+</ul>
+
+
+    <hr />
+    
+    <center>Copyright 2024. tinyblog.</center>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

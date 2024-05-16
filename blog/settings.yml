@@ -1,0 +1,6 @@
+blogName: tinyblog
+inputDirectory: src
+outputDirectory: dist
+theme: tinyblog
+defaultAuthor: Lars Rotgers
+generateTableOfContents: true

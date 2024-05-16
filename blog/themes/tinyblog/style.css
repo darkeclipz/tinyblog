@@ -1,0 +1,58 @@
+:root {
+    --max-width: 80ch;
+}
+
+body {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 6ch;
+    line-height: 1.6;
+    font-optical-sizing: auto;
+    font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.1;
+    font-style: bold;
+    color: #4d2d0b;
+    font-family: "Besley", serif;
+}
+
+img {
+    margin: 0 auto;
+    max-width: var(--max-width);
+    max-height: var(--max-width);
+}
+
+pre.mermaid {
+    text-align: center;
+}
+
+code {
+    color: #ff7800;
+}
+
+hr {
+    border: 0;
+    border-top: 2px solid #ff7800;
+    border-bottom: 2px solid #ff7800;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 0.33s;
+}
