@@ -7,6 +7,15 @@ public record Markdown(string Value)
     public static string Extension { get; } = "md";
 }
 
+public static class PostHeaderParameter
+{
+    public static readonly string Title = "title";
+    public static readonly string Author = "author";
+    public static readonly string Date = "date";
+    public static readonly string Hidden = "hidden";
+    public static readonly string Published = "published";
+}
+
 public class PostHeader
 {
     public string Title { get; private set; } = string.Empty;
@@ -39,10 +48,10 @@ public class Post
     {
         string post = Markdig.Markdown.ToHtml(Markdown?.Value ?? string.Empty);
         Html = template.Html
-            .Replace("title", Header?.Title ?? string.Empty)
-            .Replace("author", Header?.Author ?? string.Empty)
-            .Replace("date", Header?.Date.ToString() ?? string.Empty)
-            .Replace("content", post);
+            .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
+            .Replace(Placeholder.Author, Header?.Author ?? string.Empty)
+            .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)
+            .Replace(Placeholder.Content, post);
         return this;
     }
 
@@ -68,29 +77,29 @@ public class Post
             {
                 var header = Markdown.Value[3..end].Trim();
 
-                if (!TryGetProperty("title", header, out string title))
+                if (!TryGetProperty(PostHeaderParameter.Title, header, out string title))
                 {
                     Logger.LogWarning($"{File.FileName} has no title.");
                     title = "Untitled post";
                 }
 
-                if (!TryGetProperty("author", header, out string author))
+                if (!TryGetProperty(PostHeaderParameter.Author, header, out string author))
                 {
                     author = settings.DefaultAuthor;
                 }
 
-                if (!TryGetProperty("date", header, out string date))
+                if (!TryGetProperty(PostHeaderParameter.Date, header, out string date))
                 {
-                    Logger.LogWarning($"{File.FileName} has no date.");
+                    Logger.LogWarning($"{File.FileName} has no date, using current date instead.");
                     date = DateTimeOffset.Now.ToString();
                 }
 
-                if (!TryGetProperty("hidden", header, out string hidden))
+                if (!TryGetProperty(PostHeaderParameter.Hidden, header, out string hidden))
                 {
                     hidden = "false";
                 }
 
-                if (!TryGetProperty("published", header, out string published))
+                if (!TryGetProperty(PostHeaderParameter.Published, header, out string published))
                 {
                     published = "true";
                 }

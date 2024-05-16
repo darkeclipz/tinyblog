@@ -8,6 +8,14 @@ public record Html(string Value)
     }
 }
 
+public static class Placeholder
+{
+    public static readonly string Title = "title";
+    public static readonly string Author = "author";
+    public static readonly string Date = "date";
+    public static readonly string Content = "content";
+}
+
 public class Template
 {
     public File File { get; private set; } = null!;
@@ -17,10 +25,10 @@ public class Template
     {
         string html = System.IO.File.ReadAllText(template.AbsolutePath);
 
-        Guard.Against.MissingRequiredPlaceholder(html, "title");
-        Guard.Against.MissingRequiredPlaceholder(html, "content");
-        Guard.Against.MissingOptionalPlaceholder(html, "author");
-        Guard.Against.MissingOptionalPlaceholder(html, "date");
+        Guard.Against.MissingRequiredPlaceholder(html, Placeholder.Title);
+        Guard.Against.MissingRequiredPlaceholder(html, Placeholder.Content);
+        Guard.Against.MissingOptionalPlaceholder(html, Placeholder.Author);
+        Guard.Against.MissingOptionalPlaceholder(html, Placeholder.Date);
 
         return new Template
         {
