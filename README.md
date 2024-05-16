@@ -1,6 +1,6 @@
 ![Logo](logo/github-logo.png)
 
-Let's create the worlds smallest blog engine.
+Let's create the worlds smallest blog engine, that yet packs a punch.
 
 ## Philosophy behind tinyblog
 
