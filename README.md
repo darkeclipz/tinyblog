@@ -24,16 +24,17 @@ tinyblogs has the following features.
 
 Installing tinyblog is as easy as following the steps below.
 
-
-
  1. Download the latest release and extract this into a folder somewhere.
-  i. [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.0.0/tinyblog-2.0.0.zip)
  3. Add that directory to your `PATH` environment variable.
  4. Create a new empty folder and run `tinyblog init` .
  5. Configure your blog in the `settings.yml` file.
  6. Build the blog with `tinyblog build`.
    
 Delete the directory to uninstall it.
+
+## Releases
+
+ * [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.0.0/tinyblog-2.0.0.zip)
 
 ## CLI commands
 
