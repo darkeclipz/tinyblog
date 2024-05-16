@@ -70,7 +70,7 @@ public class Post
 
                 if (!TryGetProperty("title", header, out string title))
                 {
-                    TinyBlogEngine.Log(LogCategory.Warning, $"{File.FileName} has no title.");
+                    Logger.LogWarning($"{File.FileName} has no title.");
                     title = "Untitled post";
                 }
 
@@ -81,7 +81,7 @@ public class Post
 
                 if (!TryGetProperty("date", header, out string date))
                 {
-                    TinyBlogEngine.Log(LogCategory.Warning, $"{File.FileName} has no date.");
+                    Logger.LogWarning($"{File.FileName} has no date.");
                     date = DateTimeOffset.Now.ToString();
                 }
 

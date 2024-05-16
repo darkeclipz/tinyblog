@@ -36,7 +36,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
                     .AddTo(tableOfContents)
                     .SaveTo(OutputDirectory);
 
-                Log(LogCategory.Build, file.AbsolutePath);
+                Logger.LogBuild(file.AbsolutePath);
             });
 
         if (Settings.GenerateTableOfContents)
@@ -45,11 +45,11 @@ public class TinyBlogEngine(TinyBlogSettings settings)
                 .InsertIn(Template, Settings)
                 .SaveTo(OutputDirectory);
 
-            Log(LogCategory.Info, "Generated table of contents.");
+            Logger.LogInfo("Generated table of contents.");
         }
 
         stopwatch.Stop();
-        Log(LogCategory.Success, $"Build completed in {stopwatch.ElapsedMilliseconds}ms.");
+        Logger.LogSuccess($"Build completed in {stopwatch.ElapsedMilliseconds}ms.");
     }
 
     public void Watch()
@@ -65,7 +65,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
             Build();
         };
 
-        Log(LogCategory.Watch, "Watching for changes. Press any key to exit.");
+        Logger.LogWatch("Watching for changes. Press any key to exit.");
         Console.ReadKey();
     }
 
@@ -84,19 +84,19 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         }
 
         var defaultSettings = TinyBlogSettings.CreateDefaultConfiguration(currentDirectory, options);
-        Log(LogCategory.Info, "Creating default configuration file.");
+        Logger.LogInfo("Creating default configuration file.");
 
         var sourceInputDirectory = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.InputDirectory));
         var targetInputDirectory = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.InputDirectory));
         sourceInputDirectory.CopyFilesRecursively(targetInputDirectory, replace: options.Force);
-        Log(LogCategory.Copy, "Creating src directory.");
+        Logger.LogCopy("Creating src directory.");
 
         var sourceThemes = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.ThemesFolder));
         var targetThemes = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.ThemesFolder));
         sourceThemes.CopyFilesRecursively(targetThemes, replace: options.Force);
-        Log(LogCategory.Copy, "Creating themes directory.");
+        Logger.LogCopy("Creating themes directory.");
 
-        Log(LogCategory.Success, "Initialized blog.");
+        Logger.LogSuccess("Initialized blog.");
     }
 
     public static void Version()
@@ -112,7 +112,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
             .ForEach(file =>
             {
                 file.CopyTo(OutputDirectory);
-                Log(LogCategory.Copy, file.AbsolutePath);
+                Logger.LogCopy(file.AbsolutePath);
             });
     }
 
@@ -120,41 +120,6 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         File stylesheet = File.Create(Path.Combine(Settings.ThemesFolder, Settings.Theme, Settings.StylesheetName));
         stylesheet.CopyTo(OutputDirectory);
-        Log(LogCategory.Copy, stylesheet.AbsolutePath);
+        Logger.LogCopy(stylesheet.AbsolutePath);
     }
-
-    public static void Log(LogCategory category, string message)
-    {
-        string timestamp = DateTime.Now.ToString("HH:mm:ss.fff");
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write($"[{timestamp}] ");
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        if (category == LogCategory.Success)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-        }
-        else if (category == LogCategory.Warning)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-        }
-        else if (category == LogCategory.Error)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-        }
-        Console.Write($"{category.ToString().ToLower()}");
-        Console.ResetColor();
-        Console.Write(" ");
-        Console.WriteLine(message);
-    }
-}
-
-public enum LogCategory
-{
-    Build,
-    Info,
-    Copy,
-    Success,
-    Watch,
-    Warning,
-    Error
 }

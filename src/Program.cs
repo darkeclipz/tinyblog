@@ -38,42 +38,42 @@ static int Run(bool watch)
     }
     catch (EmptyParameterException epe)
     {
-        TinyBlogEngine.Log(LogCategory.Error, $"Parameter '{epe.ParameterName}' is empty");
+        Logger.LogError($"Parameter '{epe.ParameterName}' is empty");
         return error;
     }
     catch (ThemeFolderNotFoundException)
     {
-        TinyBlogEngine.Log(LogCategory.Error, "Themes folder not found.");
+        Logger.LogError("Themes folder not found.");
         return error;
     }
     catch (ThemeNotFoundException)
     {
-        TinyBlogEngine.Log(LogCategory.Error, $"Theme '{settings!.Theme}' not found.");
+        Logger.LogError($"Theme '{settings!.Theme}' not found.");
         return error;
     }
     catch (TemplateNotFoundException)
     {
-        TinyBlogEngine.Log(LogCategory.Error, $"{settings!.TemplateName} not found in theme folder.");
+        Logger.LogError($"{settings!.TemplateName} not found in theme folder.");
         return error;
     }
     catch (StylesheetNotFoundException)
     {
-        TinyBlogEngine.Log(LogCategory.Error, $"{settings!.StylesheetName} not found in theme folder.");
+        Logger.LogError($"{settings!.StylesheetName} not found in theme folder.");
         return error;
     }
     catch (MissingPlaceholderException mpe)
     {
-        TinyBlogEngine.Log(LogCategory.Error, $"Placeholder '{{{{ {mpe.PlaceholderName} }}}}' is missing in template.");
+        Logger.LogError($"Placeholder '{{{{ {mpe.PlaceholderName} }}}}' is missing in template.");
         return error;
     }
     catch (SettingsNotFoundException)
     {
-        TinyBlogEngine.Log(LogCategory.Warning, "No settings file found. Run 'tinyblog init' to create one.");
+        Logger.LogWarning("No settings file found. Run 'tinyblog init' to create one.");
         return error;
     }
     catch (Exception ex)
     {
-        TinyBlogEngine.Log(LogCategory.Error, ex.Message);
+        Logger.LogError(ex.Message);
         return error;
     }
 
