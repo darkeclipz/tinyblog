@@ -14,6 +14,8 @@ public static class Placeholder
     public static readonly string Author = "author";
     public static readonly string Date = "date";
     public static readonly string Content = "content";
+    public static readonly string Now = "now";
+    public static readonly string Year = "year";
 }
 
 public class Template

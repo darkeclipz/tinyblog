@@ -51,7 +51,9 @@ public class Post
             .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
             .Replace(Placeholder.Author, Header?.Author ?? string.Empty)
             .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)
-            .Replace(Placeholder.Content, post);
+            .Replace(Placeholder.Content, post)
+            .Replace(Placeholder.Now, DateTimeOffset.Now.ToString())
+            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString());
         return this;
     }
 
