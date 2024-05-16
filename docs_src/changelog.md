@@ -4,6 +4,13 @@ author: Lars Rotgers
 hidden: false
 ---
 
+## tinyblog-2.0.1 (not released)
+
+This is a list of upcoming changes that have not yet been released.
+
+ * Removed the h1 header from the table of contents.
+ * After initializing a blog, a build is always created.
+
 ## tinyblog-2.0.0
 
 Release 2.0.0 features a complete rewrite of the blogging engine. This is done to streamline the code and provide a good baseline to add the following new functionality:
