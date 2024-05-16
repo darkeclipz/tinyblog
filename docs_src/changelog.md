@@ -15,6 +15,8 @@ This is a list of upcoming changes that have not yet been released.
  * The output directory is now cleared before building.
  * Watching will now rebuild the entire blog and copy the theme changes as well.
  * Changed the log colors to be less annoying.
+ * Added a `now` placeholder that will be replaced with `DateTimeOffset.Now.ToString()`.
+ * Added a `year` placeholder that will be replace with `DateTimeOffset.Now.Year.ToString()`.
 
 ## tinyblog-2.0.0
 
