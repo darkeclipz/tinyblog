@@ -1,6 +1,6 @@
 blogName: tinyblog
-inputDirectory: src
-outputDirectory: dist
+inputDirectory: docs_src
+outputDirectory: docs
 theme: tinyblog
 defaultAuthor: Lars Rotgers
 generateTableOfContents: true
