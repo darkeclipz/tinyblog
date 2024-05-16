@@ -1,6 +1,6 @@
 ![Logo](logo/github-logo.png)
 
-This is a really really tiny blog, that is generated from Markdown files.
+Let's create the worlds smallest blog engine.
 
 ## Philosophy behind tinyblog
 
