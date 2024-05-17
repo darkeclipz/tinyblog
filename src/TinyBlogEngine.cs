@@ -55,9 +55,18 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         Build();
 
-        using var watcher = new FileSystemWatcher(Environment.CurrentDirectory, Filter.Markdown);
-        watcher.IncludeSubdirectories = true;
-        watcher.EnableRaisingEvents = true;
+        var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+        
+        using var sourceWatcher = 
+            new FileSystemWatcher(Path.Combine(currentDirectory, settings.InputDirectory), Filter.Markdown);
+        sourceWatcher.IncludeSubdirectories = true;
+        sourceWatcher.EnableRaisingEvents = true;
+        
+        using var themeWatcher =
+            new FileSystemWatcher(Path.Combine(currentDirectory, TinyBlogSettings.ThemesFolder), Filter.All);
+        themeWatcher.IncludeSubdirectories = true;
+        themeWatcher.EnableRaisingEvents = true;
+        
         var cancellationTokenSource = new CancellationTokenSource();
         var cancellationToken = cancellationTokenSource.Token;
 
@@ -69,8 +78,11 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
         try
         {
-            watcher.Changed += OnFileChanged;
-            Logger.LogWatch("Watching for changes. Press Ctrl+C to exit.");
+            sourceWatcher.Changed += OnFileChanged;
+            themeWatcher.Changed += OnFileChanged;
+            
+            Logger.LogWatch($"Watching for changes in {currentDirectory}.");
+            Logger.LogWatch("Press Ctrl+C to exit.");
             
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -79,7 +91,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         }
         finally
         {
-            watcher.Changed -= OnFileChanged;
+            sourceWatcher.Changed -= OnFileChanged;
+            themeWatcher.Changed -= OnFileChanged;
         }
     }
     

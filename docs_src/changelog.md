@@ -4,9 +4,9 @@ author: Lars Rotgers
 hidden: false
 ---
 
-## tinyblog-2.0.1 (not released)
+## tinyblog-2.1.1
 
-This is a list of upcoming changes that have not yet been released.
+Release 2.1.1 has some minor improvements in useability and code quality.
 
  * Removed the h1 header from the table of contents.
  * After initializing a blog, a build is always created.
@@ -17,6 +17,9 @@ This is a list of upcoming changes that have not yet been released.
  * Changed the log colors to be less annoying.
  * Added a `now` placeholder that will be replaced with `DateTimeOffset.Now.ToString()`.
  * Added a `year` placeholder that will be replace with `DateTimeOffset.Now.Year.ToString()`.
+ * Fixed an issue where published themes ended up in the table of contents.
+ * Refactored the code to implemented more C# best practices.
+ * The idea of a template is renamed to a layout.
 
 ## tinyblog-2.0.0
 

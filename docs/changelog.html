@@ -26,8 +26,8 @@
         </nav>
     <hr/>
 
-    <h2>tinyblog-2.0.1 (not released)</h2>
-<p>This is a list of upcoming changes that have not yet been released.</p>
+    <h2>tinyblog-2.1.1</h2>
+<p>Release 2.1.1 has some minor improvements in useability and code quality.</p>
 <ul>
 <li>Removed the h1 header from the table of contents.</li>
 <li>After initializing a blog, a build is always created.</li>
@@ -41,6 +41,9 @@
 <li>Changed the log colors to be less annoying.</li>
 <li>Added a <code>now</code> placeholder that will be replaced with <code>DateTimeOffset.Now.ToString()</code>.</li>
 <li>Added a <code>year</code> placeholder that will be replace with <code>DateTimeOffset.Now.Year.ToString()</code>.</li>
+<li>Fixed an issue where published themes ended up in the table of contents.</li>
+<li>Refactored the code to implemented more C# best practices.</li>
+<li>The idea of a template is renamed to a layout.</li>
 </ul>
 <h2>tinyblog-2.0.0</h2>
 <p>Release 2.0.0 features a complete rewrite of the blogging engine. This is done to streamline the code and provide a good baseline to add the following new functionality:</p>
@@ -77,7 +80,7 @@
     </div>
 
     <div class="last-update">
-        Last update: 17/05/2024 02:25:46 +02:00
+        Last update: 17/05/2024 15:36:17 +02:00
     </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
