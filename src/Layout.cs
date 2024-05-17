@@ -23,9 +23,9 @@ public class Layout
     public File File { get; private set; } = null!;
     public Html Html { get; private set; } = null!;
 
-    public static Layout Create(File template)
+    public static Layout Create(File layout)
     {
-        var html = System.IO.File.ReadAllText(template.AbsolutePath);
+        var html = System.IO.File.ReadAllText(layout.AbsolutePath);
 
         Guard.Against.MissingRequiredPlaceholder(html, Placeholder.Title);
         Guard.Against.MissingRequiredPlaceholder(html, Placeholder.Content);
@@ -34,7 +34,7 @@ public class Layout
 
         return new Layout
         {
-            File = template,
+            File = layout,
             Html = new Html(html)
         };
     }

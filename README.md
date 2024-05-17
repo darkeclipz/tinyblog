@@ -60,20 +60,19 @@ $ root
 │   └── post1.html
 └── themes
     └── default
-        ├── template.html
+        ├── layout.html
         └── style.css
 ```
 
  * The `settings.yml` file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.
  * All the files from `src` are copied to the `dist` folder.
  * All files with the `.md` extensions are converted to `.html`.
- * The `template.html` is used for the given theme.
+ * The `layout.html` is used for the given theme.
  * The `style.css` is copied from the theme folder into the `includes` folder.
 
 ## Open bugs
 
-  1. Changes to `template.html` are not reflected without restarting the application while in `watch` mode.
-  2. The version displayed with `version` is incorrect.
+There are no open bugs currently.
 
 ## Used packages
 

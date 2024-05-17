@@ -66,7 +66,7 @@ static int Run(bool watch)
     }
     catch (MissingPlaceholderException mpe)
     {
-        Logger.LogError($"Placeholder '{{{{ {mpe.PlaceholderName} }}}}' is missing in template.");
+        Logger.LogError($"Placeholder '{{{{ {mpe.PlaceholderName} }}}}' is missing in layout.");
         return error;
     }
     catch (SettingsNotFoundException)

@@ -78,7 +78,7 @@ public static class Guard
         {
             if (!text.Contains($"{{{{ {placeholderName} }}}}", StringComparison.Ordinal))
             {
-                Logger.LogWarning($"Placeholder '{{{{ {placeholderName} }}}}' is missing in template.");
+                Logger.LogWarning($"Placeholder '{{{{ {placeholderName} }}}}' is missing in layout.");
             }
         }
 

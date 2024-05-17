@@ -85,7 +85,6 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     
     private void OnFileChanged(object source, FileSystemEventArgs e)
     {
-        var templateFile = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.LayoutName);
         Thread.Sleep(250); // Wait for file to unlock, yes I know...
         Build();
     }
