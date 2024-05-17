@@ -44,11 +44,11 @@ public class Post
     private Html? Html { get; set; }
     public PostHeader? Header { get; private set; }
 
-    public Post InsertIn(Template template)
+    public Post InsertIn(Layout layout)
     {
         var post = Markdig.Markdown.ToHtml(Markdown.Value);
 
-        Html = template.Html
+        Html = layout.Html
             .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
             .Replace(Placeholder.Author, Header?.Author ?? string.Empty)
             .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)

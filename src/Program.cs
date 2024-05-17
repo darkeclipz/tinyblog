@@ -54,9 +54,9 @@ static int Run(bool watch)
         Logger.LogError($"Theme '{settings!.Theme}' not found.");
         return error;
     }
-    catch (TemplateNotFoundException)
+    catch (LayoutNotFoundException)
     {
-        Logger.LogError($"{TinyBlogSettings.TemplateName} not found in theme folder.");
+        Logger.LogError($"{TinyBlogSettings.LayoutName} not found in theme folder.");
         return error;
     }
     catch (StylesheetNotFoundException)

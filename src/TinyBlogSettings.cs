@@ -65,7 +65,7 @@ public class TinyBlogSettings
 
     [YamlIgnore] public const string ThemesFolder = "themes";
 
-    [YamlIgnore] public const string TemplateName = "template.html";
+    [YamlIgnore] public const string LayoutName = "layout.html";
 
     [YamlIgnore] public const string StylesheetName = "style.css";
 

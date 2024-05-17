@@ -18,12 +18,12 @@ public static class Placeholder
     public const string Year = "year";
 }
 
-public class Template
+public class Layout
 {
     public File File { get; private set; } = null!;
     public Html Html { get; private set; } = null!;
 
-    public static Template Create(File template)
+    public static Layout Create(File template)
     {
         var html = System.IO.File.ReadAllText(template.AbsolutePath);
 
@@ -32,7 +32,7 @@ public class Template
         Guard.Against.MissingOptionalPlaceholder(html, Placeholder.Author);
         Guard.Against.MissingOptionalPlaceholder(html, Placeholder.Date);
 
-        return new Template
+        return new Layout
         {
             File = template,
             Html = new Html(html)

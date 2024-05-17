@@ -4,7 +4,7 @@ public class ThemeFolderNotFoundException : Exception;
 
 public class ThemeNotFoundException : Exception;
 
-public class TemplateNotFoundException : Exception;
+public class LayoutNotFoundException : Exception;
 
 public class StylesheetNotFoundException : Exception;
 
@@ -26,7 +26,7 @@ public static class Guard
 {
     public static class Against
     {
-        public static void MissingThemeFolder(TinyBlogSettings settings)
+        public static void MissingThemeFolder()
         {
             if (!System.IO.Directory.Exists(TinyBlogSettings.ThemesFolder))
             {
@@ -42,11 +42,11 @@ public static class Guard
             }
         }
 
-        public static void MissingTemplate(TinyBlogSettings settings)
+        public static void MissingLayout(TinyBlogSettings settings)
         {
-            if (!System.IO.File.Exists(Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName)))
+            if (!System.IO.File.Exists(Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.LayoutName)))
             {
-                throw new TemplateNotFoundException();
+                throw new LayoutNotFoundException();
             }
         }
 

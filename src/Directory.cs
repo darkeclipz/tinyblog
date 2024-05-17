@@ -31,13 +31,6 @@ public class Directory
             .Select(File.Create);
     }
 
-    public IEnumerable<Directory> EnumerateDirectories(string searchPattern, SearchOption searchOption)
-    {
-        return System.IO.Directory
-            .EnumerateDirectories(AbsolutePath, searchPattern, searchOption)
-            .Select(Directory.Create);
-    }
-
     public void CopyFilesRecursively(Directory to, bool replace)
     {
         foreach (var directoryPath in System.IO.Directory.GetDirectories(AbsolutePath, "*", SearchOption.AllDirectories))
@@ -75,14 +68,6 @@ public static class EnumerableDirectoryExtensions
         foreach (var file in files)
         {
             func(file);
-        }
-    }
-
-    public static void Do(this IEnumerable<Directory> directories, Action<Directory> func)
-    {
-        foreach (var directory in directories)
-        {
-            func(directory);
         }
     }
 }

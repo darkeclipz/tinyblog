@@ -10,9 +10,9 @@ public class TableOfContents
         _posts.Add(post);
     }
 
-    public TableOfContents InsertIn(Template template, TinyBlogSettings settings)
+    public TableOfContents InsertIn(Layout layout, TinyBlogSettings settings)
     {
-        _html = template.Html
+        _html = layout.Html
             .Replace("title", "Table of contents")
             .Replace("author", settings.DefaultAuthor)
             .Replace("date", DateTimeOffset.Now.ToString())

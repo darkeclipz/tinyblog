@@ -7,24 +7,24 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     private readonly Directory _inputDirectory = Directory.Create(settings.InputDirectory);
     private readonly Directory _outputDirectory = Directory.Create(settings.OutputDirectory);
     private readonly TinyBlogSettings _settings = TinyBlogSettings.Validate(settings);
-    private Template _template = Template.Create(
-        File.Create(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName));
 
     public void Build()
     {
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        Guard.Against.MissingThemeFolder(_settings);
+        Guard.Against.MissingThemeFolder();
         Guard.Against.MissingTheme(_settings);
-        Guard.Against.MissingTemplate(_settings);
+        Guard.Against.MissingLayout(_settings);
         Guard.Against.MissingStylesheet(_settings);
 
         _outputDirectory.Clear();
         CopyStaticContent();
         CopyThemeStylesheet();
 
-        TableOfContents tableOfContents = new();
+        var layout = Layout.Create(
+            File.Create(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.LayoutName));
+        var tableOfContents = new TableOfContents();
 
         _inputDirectory
             .EnumerateFiles(Filter.Markdown, SearchOption.TopDirectoryOnly)
@@ -32,7 +32,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
             {
                 Post.From(file)
                     .GetHeaderOrDefault(_settings)
-                    .InsertIn(_template)
+                    .InsertIn(layout)
                     .AddTo(tableOfContents)
                     .SaveTo(_outputDirectory)
                     .OnSuccess(() => Logger.LogBuild(file.AbsolutePath));
@@ -41,7 +41,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         if (_settings.GenerateTableOfContents)
         {
             tableOfContents
-                .InsertIn(_template, _settings)
+                .InsertIn(layout, _settings)
                 .SaveTo(_outputDirectory);
 
             Logger.LogInfo("Generated table of contents.");
@@ -85,8 +85,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     
     private void OnFileChanged(object source, FileSystemEventArgs e)
     {
-        var templateFile = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.TemplateName);
-        _template = Template.Create(templateFile);
+        var templateFile = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.LayoutName);
         Thread.Sleep(250); // Wait for file to unlock, yes I know...
         Build();
     }
@@ -118,11 +117,6 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         Logger.LogCopy("Creating themes directory.");
 
         Logger.LogSuccess("Initialized blog.");
-    }
-
-    public static void Version()
-    {
-        Console.WriteLine($"v{typeof(TinyBlogEngine).Assembly.GetName().Version}");
     }
 
     private void CopyStaticContent()
