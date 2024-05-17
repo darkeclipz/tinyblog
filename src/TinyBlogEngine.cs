@@ -5,44 +5,44 @@ namespace TinyBlog;
 
 public class TinyBlogEngine(TinyBlogSettings settings)
 {
-    readonly Directory InputDirectory = Directory.Create(settings.InputDirectory);
-    readonly Directory OutputDirectory = Directory.Create(settings.OutputDirectory);
-    readonly TinyBlogSettings Settings = TinyBlogSettings.Validate(settings);
-    Template Template = Template.Create(File.Create(System.IO.Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)));
+    private readonly Directory _inputDirectory = Directory.Create(settings.InputDirectory);
+    private readonly Directory _outputDirectory = Directory.Create(settings.OutputDirectory);
+    private readonly TinyBlogSettings _settings = TinyBlogSettings.Validate(settings);
+    private Template _template = Template.Create(File.Create(System.IO.Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName)));
 
     public void Build()
     {
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        Guard.Against.MissingThemeFolder(Settings);
-        Guard.Against.MissingTheme(Settings);
-        Guard.Against.MissingTemplate(Settings);
-        Guard.Against.MissingStylesheet(Settings);
+        Guard.Against.MissingThemeFolder(_settings);
+        Guard.Against.MissingTheme(_settings);
+        Guard.Against.MissingTemplate(_settings);
+        Guard.Against.MissingStylesheet(_settings);
 
-        OutputDirectory.Clear();
+        _outputDirectory.Clear();
         CopyStaticContent();
         CopyThemeStylesheet();
 
         TableOfContents tableOfContents = new();
 
-        InputDirectory
+        _inputDirectory
             .EnumerateFiles(Filter.Markdown, SearchOption.TopDirectoryOnly)
             .ForEach(file =>
             {
                 Post.From(file)
-                    .GetHeaderOrDefault(Settings)
-                    .InsertIn(Template)
+                    .GetHeaderOrDefault(_settings)
+                    .InsertIn(_template)
                     .AddTo(tableOfContents)
-                    .SaveTo(OutputDirectory)
+                    .SaveTo(_outputDirectory)
                     .OnSuccess(() => Logger.LogBuild(file.AbsolutePath));
             });
 
-        if (Settings.GenerateTableOfContents)
+        if (_settings.GenerateTableOfContents)
         {
             tableOfContents
-                .InsertIn(Template, Settings)
-                .SaveTo(OutputDirectory);
+                .InsertIn(_template, _settings)
+                .SaveTo(_outputDirectory);
 
             Logger.LogInfo("Generated table of contents.");
         }
@@ -55,12 +55,12 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         Build();
 
-        using var watcher = new System.IO.FileSystemWatcher(Settings.InputDirectory, Filter.Markdown);
+        using var watcher = new System.IO.FileSystemWatcher(_settings.InputDirectory, Filter.Markdown);
         watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
         watcher.Changed += (sender, e) =>
         {
-            Template = Template.Create(File.Create(Path.Combine(Settings.ThemesFolder, Settings.Theme, Settings.TemplateName)));
+            _template = Template.Create(File.Create(Path.Combine(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.TemplateName)));
             System.Threading.Thread.Sleep(250); // Wait for file to unlock, yes I know...
             Build();
         };
@@ -71,9 +71,9 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
     public static void Init(InitOptions options)
     {
-        string currentWorkingDirectory = System.IO.Directory.GetCurrentDirectory();
-        string assemblyDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-            ?? throw new InvalidOperationException();
+        var currentWorkingDirectory = System.IO.Directory.GetCurrentDirectory();
+        var assemblyDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                                ?? throw new InvalidOperationException();
 
         var currentDirectory = Directory.Create(currentWorkingDirectory);
         var assemblyDir = Directory.Create(assemblyDirectory);
@@ -91,8 +91,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         sourceInputDirectory.CopyFilesRecursively(targetInputDirectory, replace: options.Force);
         Logger.LogCopy("Creating src directory.");
 
-        var sourceThemes = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.ThemesFolder));
-        var targetThemes = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.ThemesFolder));
+        var sourceThemes = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, TinyBlogSettings.ThemesFolder));
+        var targetThemes = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, TinyBlogSettings.ThemesFolder));
         sourceThemes.CopyFilesRecursively(targetThemes, replace: options.Force);
         Logger.LogCopy("Creating themes directory.");
 
@@ -106,20 +106,20 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
     private void CopyStaticContent()
     {
-        InputDirectory
+        _inputDirectory
             .EnumerateFiles(Filter.All, SearchOption.TopDirectoryOnly)
             .Where(f => f.FileName.Extension != Markdown.Extension)
             .ForEach(file =>
             {
-                file.CopyTo(OutputDirectory);
+                file.CopyTo(_outputDirectory);
                 Logger.LogCopy(file.AbsolutePath);
             });
     }
 
     private void CopyThemeStylesheet()
     {
-        File stylesheet = File.Create(Path.Combine(Settings.ThemesFolder, Settings.Theme, Settings.StylesheetName));
-        stylesheet.CopyTo(OutputDirectory);
+        var stylesheet = File.Create(Path.Combine(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.StylesheetName));
+        stylesheet.CopyTo(_outputDirectory);
         Logger.LogCopy(stylesheet.AbsolutePath);
     }
 }

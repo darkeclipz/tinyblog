@@ -3,7 +3,7 @@
 public class Directory
 {
     public string Name { get; private set; } = string.Empty;
-    public string AbsolutePath { get; private set; } = string.Empty;
+    public string AbsolutePath { get; private init; } = string.Empty;
 
     public static Directory Create(string path)
     {
@@ -35,12 +35,12 @@ public class Directory
 
     public void CopyFilesRecursively(Directory to, bool replace)
     {
-        foreach (string directoryPath in System.IO.Directory.GetDirectories(AbsolutePath, "*", SearchOption.AllDirectories))
+        foreach (var directoryPath in System.IO.Directory.GetDirectories(AbsolutePath, "*", SearchOption.AllDirectories))
         {
             System.IO.Directory.CreateDirectory(directoryPath.Replace(AbsolutePath, to.AbsolutePath));
         }
 
-        foreach (string newPath in System.IO.Directory.GetFiles(AbsolutePath, "*.*", SearchOption.AllDirectories))
+        foreach (var newPath in System.IO.Directory.GetFiles(AbsolutePath, "*.*", SearchOption.AllDirectories))
         {
             System.IO.File.Copy(newPath, newPath.Replace(AbsolutePath, to.AbsolutePath), replace);
         }
@@ -63,7 +63,7 @@ public class Directory
     }
 }
 
-public static class IEnumerableDirectoryExtensions
+public static class EnumerableDirectoryExtensions
 {
     public static void ForEach(this IEnumerable<File> files, Action<File> func)
     {

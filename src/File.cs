@@ -13,8 +13,8 @@ public record FileName(string Name, string Extension)
 
 public class File
 {
-    public FileName FileName { get; private set; } = null!;
-    public string AbsolutePath { get; private set; } = string.Empty;
+    public FileName FileName { get; private init; } = null!;
+    public string AbsolutePath { get; private init; } = string.Empty;
 
     public void CopyTo(Directory to)
     {

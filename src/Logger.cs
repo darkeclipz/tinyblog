@@ -12,22 +12,16 @@ public static class Logger
 
     private static void Log(LogCategory category, string message)
     {
-        string timestamp = DateTime.Now.ToString("HH:mm:ss.fff");
+        var timestamp = DateTime.Now.ToString("HH:mm:ss.fff");
         Console.ForegroundColor = ConsoleColor.DarkGray;
         Console.Write($"[{timestamp}] ");
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        if (category == LogCategory.Success)
+        Console.ForegroundColor = category switch
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-        }
-        else if (category == LogCategory.Warning)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-        }
-        else if (category == LogCategory.Error)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-        }
+            LogCategory.Success => ConsoleColor.Green,
+            LogCategory.Warning => ConsoleColor.Yellow,
+            LogCategory.Error => ConsoleColor.Red,
+            _ => ConsoleColor.Cyan
+        };
         Console.Write($"{category.ToString().ToLower()}");
         Console.ResetColor();
         Console.Write(" ");

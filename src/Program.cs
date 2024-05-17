@@ -53,12 +53,12 @@ static int Run(bool watch)
     }
     catch (TemplateNotFoundException)
     {
-        Logger.LogError($"{settings!.TemplateName} not found in theme folder.");
+        Logger.LogError($"{TinyBlogSettings.TemplateName} not found in theme folder.");
         return error;
     }
     catch (StylesheetNotFoundException)
     {
-        Logger.LogError($"{settings!.StylesheetName} not found in theme folder.");
+        Logger.LogError($"{TinyBlogSettings.StylesheetName} not found in theme folder.");
         return error;
     }
     catch (MissingPlaceholderException mpe)

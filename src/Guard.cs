@@ -28,7 +28,7 @@ public static class Guard
     {
         public static void MissingThemeFolder(TinyBlogSettings settings)
         {
-            if (!System.IO.Directory.Exists(settings.ThemesFolder))
+            if (!System.IO.Directory.Exists(TinyBlogSettings.ThemesFolder))
             {
                 throw new ThemeFolderNotFoundException();
             }
@@ -36,7 +36,7 @@ public static class Guard
 
         public static void MissingTheme(TinyBlogSettings settings)
         {
-            if (!System.IO.Directory.Exists(Path.Combine(settings.ThemesFolder, settings.Theme)))
+            if (!System.IO.Directory.Exists(Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme)))
             {
                 throw new ThemeNotFoundException();
             }
@@ -44,7 +44,7 @@ public static class Guard
 
         public static void MissingTemplate(TinyBlogSettings settings)
         {
-            if (!System.IO.File.Exists(Path.Combine(settings.ThemesFolder, settings.Theme, settings.TemplateName)))
+            if (!System.IO.File.Exists(Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName)))
             {
                 throw new TemplateNotFoundException();
             }
@@ -52,7 +52,7 @@ public static class Guard
 
         public static void MissingStylesheet(TinyBlogSettings settings)
         {
-            if (!System.IO.File.Exists(Path.Combine(settings.ThemesFolder, settings.Theme, settings.StylesheetName)))
+            if (!System.IO.File.Exists(Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.StylesheetName)))
             {
                 throw new StylesheetNotFoundException();
             }

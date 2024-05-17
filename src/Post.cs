@@ -4,26 +4,26 @@ namespace TinyBlog;
 
 public record Markdown(string Value)
 {
-    public static string Extension { get; } = "md";
+    public const string Extension = "md";
 }
 
 public static class PostHeaderParameter
 {
-    public static readonly string Title = "title";
-    public static readonly string Author = "author";
-    public static readonly string Date = "date";
-    public static readonly string Hidden = "hidden";
-    public static readonly string Published = "published";
+    public const string Title = "title";
+    public const string Author = "author";
+    public const string Date = "date";
+    public const string Hidden = "hidden";
+    public const string Published = "published";
     public static readonly string Active = "active";
 }
 
 public class PostHeader
 {
-    public string Title { get; private set; } = string.Empty;
-    public DateTimeOffset Date { get; private set; }
-    public string Author { get; private set; } = string.Empty;
+    public string Title { get; private init; } = string.Empty;
+    public DateTimeOffset Date { get; private init; }
+    public string Author { get; private init; } = string.Empty;
     public bool IsHidden { get; private set; } = false;
-    public bool IsPublished { get; private set; } = true;
+    public bool IsPublished { get; private init; } = true;
 
     public static PostHeader Create(string title, string author, string date, string hidden, string published)
     {
@@ -40,14 +40,14 @@ public class PostHeader
 
 public class Post
 {
-    public File File { get; private set; } = null!;
-    public Markdown Markdown { get; private set; } = null!;
-    public Html? Html { get; private set; }
+    public File File { get; private init; } = null!;
+    private Markdown Markdown { get; set; } = null!;
+    private Html? Html { get; set; }
     public PostHeader? Header { get; private set; }
 
     public Post InsertIn(Template template)
     {
-        string post = Markdig.Markdown.ToHtml(Markdown?.Value ?? string.Empty);
+        var post = Markdig.Markdown.ToHtml(Markdown?.Value ?? string.Empty);
 
         Html = template.Html
             .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
@@ -89,35 +89,35 @@ public class Post
 
         if (Markdown.Value.StartsWith("---"))
         {
-            var end = Markdown.Value.IndexOf("---", 3);
+            var end = Markdown.Value.IndexOf("---", 3, StringComparison.Ordinal);
 
             if (end > 0)
             {
                 var header = Markdown.Value[3..end].Trim();
 
-                if (!TryGetProperty(PostHeaderParameter.Title, header, out string title))
+                if (!TryGetProperty(PostHeaderParameter.Title, header, out var title))
                 {
                     Logger.LogWarning($"{File.FileName} has no title.");
                     title = "Untitled post";
                 }
 
-                if (!TryGetProperty(PostHeaderParameter.Author, header, out string author))
+                if (!TryGetProperty(PostHeaderParameter.Author, header, out var author))
                 {
                     author = settings.DefaultAuthor;
                 }
 
-                if (!TryGetProperty(PostHeaderParameter.Date, header, out string date))
+                if (!TryGetProperty(PostHeaderParameter.Date, header, out var date))
                 {
                     Logger.LogWarning($"{File.FileName} has no date, using current date instead.");
                     date = DateTimeOffset.Now.ToString();
                 }
 
-                if (!TryGetProperty(PostHeaderParameter.Hidden, header, out string hidden))
+                if (!TryGetProperty(PostHeaderParameter.Hidden, header, out var hidden))
                 {
                     hidden = "false";
                 }
 
-                if (!TryGetProperty(PostHeaderParameter.Published, header, out string published))
+                if (!TryGetProperty(PostHeaderParameter.Published, header, out var published))
                 {
                     published = "true";
                 }
@@ -143,13 +143,14 @@ public class Post
 
     public Promise SaveTo(Directory directory)
     {
-        if (Header?.IsPublished ?? true)
+        if (!(Header?.IsPublished ?? true))
         {
-            directory.Save(this);
-            return Promise.Success;
+            return Promise.Failed;
         }
 
-        return Promise.Failed;
+        directory.Save(this);
+        return Promise.Success;
+
     }
 
     public static Post From(File file)

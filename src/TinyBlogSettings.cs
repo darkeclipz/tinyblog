@@ -6,16 +6,16 @@ namespace TinyBlog;
 public class TinyBlogSettings
 {
     public string BlogName { get; set; } = "Untitled blog";
-    public string InputDirectory { get; set; } = "src";
-    public string OutputDirectory { get; set; } = "dist";
-    public string Theme { get; set; } = "default";
+    public string InputDirectory { get; init; } = "src";
+    public string OutputDirectory { get; init; } = "dist";
+    public string Theme { get; init; } = "default";
     public string DefaultAuthor { get; set; } = "Anonymous";
     public bool GenerateTableOfContents { get; set; } = true;
 
     public static TinyBlogSettings From(Directory directory)
     {
-        File settingsFile = File.Create(Path.Combine(directory.AbsolutePath, SettingsFileName));
-        string yml = settingsFile.ReadAllText();
+        var settingsFile = File.Create(Path.Combine(directory.AbsolutePath, SettingsFileName));
+        var yml = settingsFile.ReadAllText();
 
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -63,14 +63,11 @@ public class TinyBlogSettings
         return settings;
     }
 
-    [YamlIgnore] 
-    public readonly string ThemesFolder = "themes";
+    [YamlIgnore] public const string ThemesFolder = "themes";
 
-    [YamlIgnore] 
-    public readonly string TemplateName = "template.html";
+    [YamlIgnore] public const string TemplateName = "template.html";
 
-    [YamlIgnore] 
-    public readonly string StylesheetName = "style.css";
+    [YamlIgnore] public const string StylesheetName = "style.css";
 
-    static readonly string SettingsFileName = "settings.yml";
+    private const string SettingsFileName = "settings.yml";
 }
