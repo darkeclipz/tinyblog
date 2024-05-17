@@ -21,3 +21,13 @@ class BuildOptions;
 
 [Verb("watch", HelpText = "Watch the current directory for changes and build the changed file.")]
 class WatchOptions;
+
+[Verb("serve", HelpText = "Serve the current directory through a web server and watch for changes.")]
+class ServeOptions
+{
+    [Option("port", Required = false, HelpText = "The port to listen on.")]
+    public int Port { get; set; } = 8080;
+
+    [Option("open", Required = false, HelpText = "Open the default browser.")]
+    public bool Open { get; set; } = true;
+}

@@ -2,11 +2,12 @@
 
 namespace TinyBlog;
 
-public class TinyBlogEngine(TinyBlogSettings settings)
+public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancellationToken)
 {
     private readonly Directory _inputDirectory = Directory.Create(settings.InputDirectory);
     private readonly Directory _outputDirectory = Directory.Create(settings.OutputDirectory);
     private readonly TinyBlogSettings _settings = TinyBlogSettings.Validate(settings);
+    private readonly CancellationToken _cancellationToken = cancellationToken;
 
     public void Build()
     {
@@ -36,6 +37,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
                     .AddTo(tableOfContents)
                     .SaveTo(_outputDirectory)
                     .OnSuccess(() => Logger.LogBuild(file.AbsolutePath));
+                
+                _cancellationToken.ThrowIfCancellationRequested();
             });
 
         if (_settings.GenerateTableOfContents)
@@ -66,15 +69,6 @@ public class TinyBlogEngine(TinyBlogSettings settings)
             new FileSystemWatcher(Path.Combine(currentDirectory, TinyBlogSettings.ThemesFolder), Filter.All);
         themeWatcher.IncludeSubdirectories = true;
         themeWatcher.EnableRaisingEvents = true;
-        
-        var cancellationTokenSource = new CancellationTokenSource();
-        var cancellationToken = cancellationTokenSource.Token;
-
-        Console.CancelKeyPress += (_, e) =>
-        {
-            e.Cancel = true;
-            cancellationTokenSource.Cancel();
-        };
 
         try
         {
@@ -84,9 +78,9 @@ public class TinyBlogEngine(TinyBlogSettings settings)
             Logger.LogWatch($"Watching for changes in {currentDirectory}.");
             Logger.LogWatch("Press Ctrl+C to exit.");
             
-            while (!cancellationToken.IsCancellationRequested)
+            while (!_cancellationToken.IsCancellationRequested)
             {
-                cancellationToken.WaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+                _cancellationToken.WaitHandle.WaitOne(TimeSpan.FromSeconds(1));
             }
         }
         finally

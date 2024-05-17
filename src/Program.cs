@@ -1,8 +1,19 @@
-﻿using TinyBlog;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Builder;
+using TinyBlog;
 using CommandLine;
+using Microsoft.AspNetCore.Hosting;
+
+var cancellationTokenSource = new CancellationTokenSource();
+
+Console.CancelKeyPress += (_, e) =>
+{
+    e.Cancel = true;
+    cancellationTokenSource.Cancel();
+};
 
 // ReSharper disable once RedundantNameQualifier
-CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOptions>(args)
+CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOptions, ServeOptions>(args)
     .MapResult(
         (InitOptions opts) =>
         {
@@ -12,11 +23,45 @@ CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOption
         },
         (BuildOptions _) => Run(watch: false),
         (WatchOptions _) => Run(watch: true),
+        (ServeOptions options) => Serve(options),
         _ => 2);
 
 return 0;
 
-static int Run(bool watch)
+int Serve(ServeOptions options)
+{
+    var currentWorkingDirectory = TinyBlog.Directory.Create(System.IO.Directory.GetCurrentDirectory());
+    
+    Guard.Against.MissingSettings(currentWorkingDirectory);
+    var settings = TinyBlogSettings.From(currentWorkingDirectory);
+    var url = $"http://localhost:{options.Port}";
+    
+    var host = new WebHostBuilder()
+        .UseKestrel()
+        .UseContentRoot(currentWorkingDirectory.AbsolutePath)
+        .UseWebRoot(settings.OutputDirectory)
+        .UseUrls(url)
+        .UseStartup<Startup>()
+        .Build();
+
+    host.Start();
+    Logger.LogInfo($"Web server started at {url}.");
+    
+    if (options.Open)
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = $"{url}/index.html",
+            UseShellExecute = true
+        });
+    }
+
+    Run(watch: true);
+
+    return 0;
+}
+
+int Run(bool watch)
 {
     const int success = 0;
     const int error = 1;
@@ -28,7 +73,7 @@ static int Run(bool watch)
         Guard.Against.MissingSettings(currentWorkingDirectory);
 
         settings = TinyBlogSettings.From(currentWorkingDirectory);
-        var blog = new TinyBlogEngine(settings);
+        var blog = new TinyBlogEngine(settings, cancellationTokenSource.Token);
 
         if (watch)
         {
@@ -79,6 +124,18 @@ static int Run(bool watch)
         Logger.LogError(ex.Message);
         return error;
     }
+    finally
+    {
+        cancellationTokenSource.Cancel();
+    }
 
     return success;
+}
+
+internal class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseStaticFiles();
+    }
 }

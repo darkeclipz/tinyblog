@@ -16,7 +16,9 @@ public class TableOfContents
             .Replace("title", "Table of contents")
             .Replace("author", settings.DefaultAuthor)
             .Replace("date", DateTimeOffset.Now.ToString())
-            .Replace("content", GetHtml());
+            .Replace("content", GetHtml())
+            .Replace("now", DateTimeOffset.Now.ToString())
+            .Replace("year", DateTimeOffset.Now.Year.ToString());
 
         return this;
     }
