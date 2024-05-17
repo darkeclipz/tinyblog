@@ -30,6 +30,7 @@ public class TableOfContents
     {
         var posts = Posts
             .Where(p => !p.Header!.IsHidden)
+            .Where(p => p.Header!.IsPublished)
             .OrderByDescending(p => p.Header!.Date)
             .Select(p => $"<li><a href=\"{p.File.FileName.Name}.html\">{p.Header!.Title}</a></li>");
 

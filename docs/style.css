@@ -1,5 +1,10 @@
 :root {
     --max-width: 80ch;
+    --primary-color: #ff7800;
+    --secondary-color: #4d2d0b;
+    --tertiary-color: #989898;
+    --background-color: #f8f8f8;
+    --font-color: black;
 }
 
 body {
@@ -9,6 +14,8 @@ body {
     line-height: 1.6;
     font-optical-sizing: auto;
     font-family: "Inter", sans-serif;
+    color: var(--font-color);
+    background-color: var(--background-color);
 }
 
 h1,
@@ -19,7 +26,7 @@ h5,
 h6 {
     line-height: 1.1;
     font-style: bold;
-    color: #4d2d0b;
+    color: var(--secondary-color);
     font-family: "Besley", serif;
 }
 
@@ -34,13 +41,13 @@ pre.mermaid {
 }
 
 code {
-    color: #ff7800;
+    color: var(--primary-color);
 }
 
 hr {
     border: 0;
-    border-top: 2px solid #ff7800;
-    border-bottom: 2px solid #ff7800;
+    border-top: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
 }
 
 @keyframes fadeIn {
@@ -58,6 +65,66 @@ hr {
 }
 
 .last-update {
-    color: #989898;
+    color: var(--tertiary-color);
     text-align: center;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+nav ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    padding: 8px 18px;
+    border-radius: 4px;
+}
+
+nav ul li:hover {
+    background-color: var(--secondary-color);
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li a:active {
+    display: block;
+    color: red;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    display: block;
+    color: green;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li a:visited {
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li {
+    color: red;
 }

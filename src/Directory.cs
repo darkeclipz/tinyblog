@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace TinyBlog;
+﻿namespace TinyBlog;
 
 public class Directory
 {
@@ -50,7 +48,7 @@ public class Directory
 
     public void Clear()
     {
-        System.IO.Directory.Delete(AbsolutePath, true);
+        System.IO.Directory.Delete(AbsolutePath, recursive: true);
         System.IO.Directory.CreateDirectory(AbsolutePath);
     }
 

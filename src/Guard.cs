@@ -84,7 +84,7 @@ public static class Guard
 
         public static void BlogAlreadyInitialized(Directory currentWorkingDirectory)
         {
-            if (TinyBlogSettings.Exists(currentWorkingDirectory))
+            if (TinyBlogSettings.ExistsIn(currentWorkingDirectory))
             {
                 throw new BlogAlreadyInitializedException();
             }
@@ -92,7 +92,7 @@ public static class Guard
 
         public static void MissingSettings(Directory currentWorkingDirectory)
         {
-            if (!TinyBlogSettings.Exists(currentWorkingDirectory))
+            if (!TinyBlogSettings.ExistsIn(currentWorkingDirectory))
             {
                 throw new SettingsNotFoundException();
             }

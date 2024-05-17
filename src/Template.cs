@@ -16,6 +16,7 @@ public static class Placeholder
     public static readonly string Content = "content";
     public static readonly string Now = "now";
     public static readonly string Year = "year";
+    public static readonly string Active = "active";
 }
 
 public class Template

@@ -56,6 +56,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         Build();
 
         using var watcher = new System.IO.FileSystemWatcher(Settings.InputDirectory, Filter.Markdown);
+        watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
         watcher.Changed += (sender, e) =>
         {

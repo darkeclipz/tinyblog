@@ -24,7 +24,7 @@ public class TinyBlogSettings
         return deserializer.Deserialize<TinyBlogSettings>(yml);
     }
 
-    public static bool Exists(Directory directory)
+    public static bool ExistsIn(Directory directory)
     {
         return System.IO.File.Exists(Path.Combine(directory.AbsolutePath, SettingsFileName));
     }

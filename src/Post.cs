@@ -14,6 +14,7 @@ public static class PostHeaderParameter
     public static readonly string Date = "date";
     public static readonly string Hidden = "hidden";
     public static readonly string Published = "published";
+    public static readonly string Active = "active";
 }
 
 public class PostHeader
@@ -47,13 +48,28 @@ public class Post
     public Post InsertIn(Template template)
     {
         string post = Markdig.Markdown.ToHtml(Markdown?.Value ?? string.Empty);
+
         Html = template.Html
             .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
             .Replace(Placeholder.Author, Header?.Author ?? string.Empty)
             .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)
             .Replace(Placeholder.Content, post)
             .Replace(Placeholder.Now, DateTimeOffset.Now.ToString())
-            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString());
+            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString())
+            .Replace(Placeholder.Active, "active");
+
+        var activeMatches = Regex.Match(template.Html.Value, @$"{{ isActive ({File.FileName.Name}) }}");
+        if (activeMatches.Groups.Count == 1)
+        {
+            Html = Html.Replace(activeMatches.Groups[0].Value, "active");
+        }
+
+        var allMatches = Regex.Match(template.Html.Value, @"{{ isActive (\w+) }}");
+        if (allMatches.Groups.Count == 2)
+        {
+            Html = Html.Replace(activeMatches.Groups[0].Value, string.Empty);
+        }
+
         return this;
     }
 
@@ -125,15 +141,15 @@ public class Post
         return this;
     }
 
-    public FileSaveResult SaveTo(Directory directory)
+    public Promise SaveTo(Directory directory)
     {
         if (Header?.IsPublished ?? true)
         {
             directory.Save(this);
-            return FileSaveResult.Success;
+            return Promise.Success;
         }
 
-        return FileSaveResult.Failed;
+        return Promise.Failed;
     }
 
     public static Post From(File file)
@@ -146,29 +162,4 @@ public class Post
     }
 
     public override string ToString() => Html?.Value ?? string.Empty;
-}
-
-public class FileSaveResult
-{
-    private bool IsSuccess { get; set; }
-    public static readonly FileSaveResult Success = Create(true);
-    public static readonly FileSaveResult Failed = Create(false);
-
-    private static FileSaveResult Create(bool success)
-    {
-        return new FileSaveResult()
-        {
-            IsSuccess = success
-        };
-    }
-
-    public FileSaveResult OnSuccess(Action action)
-    {
-        if (IsSuccess)
-        {
-            action();
-        }
-
-        return this;
-    }
 }

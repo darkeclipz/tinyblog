@@ -15,6 +15,16 @@
     <h3>Let's build the smallest blog engine you can imagine</h3>
 
     <hr/>
+        <nav>
+            <ul>
+                <li><a href="about-tiny-blog.html" class="{{ isActive about-tiny-blog }}">Home</a></li>
+                <li><a href="installation.html" class="{{ isActive installation }}">Installation</a></li>
+                <li><a href="releases.html" class="{{ isActive releases }}">Releases</a></li>
+                <li><a href="changelog.html" class="{{ isActive changelog }}">Change log</a></li>
+                <li><a href="about.html" class="{{ isActive about }}">About</a></li>
+            </ul>
+        </nav>
+    <hr/>
 
     <h2>tinyblog-2.0.1 (not released)</h2>
 <p>This is a list of upcoming changes that have not yet been released.</p>
@@ -67,7 +77,7 @@
     </div>
 
     <div class="last-update">
-        Last update: 17/05/2024 00:30:59 +02:00
+        Last update: 17/05/2024 02:25:46 +02:00
     </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -91,6 +101,16 @@
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true });
+    </script>
+
+    <script>
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.style.setProperty('--background-color', '#150b00');
+            document.documentElement.style.setProperty('--primary-color', '#ff7800');
+            document.documentElement.style.setProperty('--secondary-color', 'var(--primary-color)');
+            document.documentElement.style.setProperty('--tertiary-color', '#989898');
+            document.documentElement.style.setProperty('--font-color', '#fff');
+        }
     </script>
 </body>
 </html>
