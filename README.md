@@ -34,7 +34,7 @@ Delete the directory to uninstall it.
 
 ## Releases
 
- * [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.0.0/tinyblog-2.0.0.zip)
+ * [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.1.1/tinyblog-2.1.1.zip)
 
 ## CLI commands
 
