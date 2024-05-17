@@ -14,6 +14,8 @@ CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOption
         (WatchOptions _) => Run(watch: true),
         _ => 2);
 
+return 0;
+
 static int Run(bool watch)
 {
     const int success = 0;
