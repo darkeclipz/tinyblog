@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace TinyBlog;
 
@@ -8,7 +9,8 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     private readonly Directory _inputDirectory = Directory.Create(settings.InputDirectory);
     private readonly Directory _outputDirectory = Directory.Create(settings.OutputDirectory);
     private readonly TinyBlogSettings _settings = TinyBlogSettings.Validate(settings);
-    private Template _template = Template.Create(File.Create(System.IO.Path.Combine(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName)));
+    private Template _template = Template.Create(
+        File.Create(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.TemplateName));
 
     public void Build()
     {
@@ -58,22 +60,43 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         using var watcher = new System.IO.FileSystemWatcher(_settings.InputDirectory, Filter.Markdown);
         watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
-        watcher.Changed += (sender, e) =>
+        var cancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancellationTokenSource.Token;
+
+        Console.CancelKeyPress += (sender, e) =>
         {
-            _template = Template.Create(File.Create(Path.Combine(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.TemplateName)));
-            System.Threading.Thread.Sleep(250); // Wait for file to unlock, yes I know...
-            Build();
+            e.Cancel = true;
+            cancellationTokenSource.Cancel();
         };
 
-        Logger.LogWatch("Watching for changes. Press any key to exit.");
-        Console.ReadKey();
+        try
+        {
+            watcher.Changed += OnFileChanged;
+            Logger.LogWatch("Watching for changes. Press Ctrl+C to exit.");
+            
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                cancellationToken.WaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+            }
+        }
+        finally
+        {
+            watcher.Changed -= OnFileChanged;
+        }
+    }
+    
+    private void OnFileChanged(object source, FileSystemEventArgs e)
+    {
+        var templateFile = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.TemplateName);
+        _template = Template.Create(templateFile);
+        System.Threading.Thread.Sleep(250); // Wait for file to unlock, yes I know...
+        Build();
     }
 
     public static void Init(InitOptions options)
     {
         var currentWorkingDirectory = System.IO.Directory.GetCurrentDirectory();
-        var assemblyDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-                                ?? throw new InvalidOperationException();
+        var assemblyDirectory = AppContext.BaseDirectory;
 
         var currentDirectory = Directory.Create(currentWorkingDirectory);
         var assemblyDir = Directory.Create(assemblyDirectory);
@@ -86,13 +109,13 @@ public class TinyBlogEngine(TinyBlogSettings settings)
         var defaultSettings = TinyBlogSettings.CreateDefaultConfiguration(currentDirectory, options);
         Logger.LogInfo("Creating default configuration file.");
 
-        var sourceInputDirectory = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, defaultSettings.InputDirectory));
-        var targetInputDirectory = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, defaultSettings.InputDirectory));
+        var sourceInputDirectory = Directory.Create(assemblyDir.AbsolutePath, defaultSettings.InputDirectory);
+        var targetInputDirectory = Directory.Create(currentDirectory.AbsolutePath, defaultSettings.InputDirectory);
         sourceInputDirectory.CopyFilesRecursively(targetInputDirectory, replace: options.Force);
         Logger.LogCopy("Creating src directory.");
 
-        var sourceThemes = Directory.Create(Path.Combine(assemblyDir.AbsolutePath, TinyBlogSettings.ThemesFolder));
-        var targetThemes = Directory.Create(Path.Combine(currentDirectory.AbsolutePath, TinyBlogSettings.ThemesFolder));
+        var sourceThemes = Directory.Create(assemblyDir.AbsolutePath, TinyBlogSettings.ThemesFolder);
+        var targetThemes = Directory.Create(currentDirectory.AbsolutePath, TinyBlogSettings.ThemesFolder);
         sourceThemes.CopyFilesRecursively(targetThemes, replace: options.Force);
         Logger.LogCopy("Creating themes directory.");
 
@@ -118,7 +141,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
 
     private void CopyThemeStylesheet()
     {
-        var stylesheet = File.Create(Path.Combine(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.StylesheetName));
+        var stylesheet = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.StylesheetName);
         stylesheet.CopyTo(_outputDirectory);
         Logger.LogCopy(stylesheet.AbsolutePath);
     }

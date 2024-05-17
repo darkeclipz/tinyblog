@@ -25,6 +25,11 @@ public class File
     {
         return System.IO.File.ReadAllText(AbsolutePath);
     }
+    
+    public static File Create(params string[] path)
+    {
+        return Create(System.IO.Path.Combine(path));
+    }
 
     public static File Create(string path)
     {

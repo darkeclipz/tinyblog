@@ -18,6 +18,11 @@ public class Directory
             AbsolutePath = Path.GetFullPath(path)
         };
     }
+    
+    public static Directory Create(params string[] path)
+    {
+        return Create(System.IO.Path.Combine(path));
+    }
 
     public IEnumerable<File> EnumerateFiles(string searchPattern, SearchOption searchOption)
     {
