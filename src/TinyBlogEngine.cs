@@ -55,7 +55,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         Build();
 
-        using var watcher = new FileSystemWatcher(_settings.InputDirectory, Filter.Markdown);
+        using var watcher = new FileSystemWatcher(Environment.CurrentDirectory, Filter.Markdown);
         watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
         var cancellationTokenSource = new CancellationTokenSource();
