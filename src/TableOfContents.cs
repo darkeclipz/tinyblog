@@ -2,21 +2,21 @@
 
 public class TableOfContents
 {
-    readonly List<Post> Posts = [];
-    Html? Html;
+    private readonly List<Post> _posts = [];
+    private Html? _html;
 
     public void AddPost(Post post)
     {
-        Posts.Add(post);
+        _posts.Add(post);
     }
 
     public TableOfContents InsertIn(Template template, TinyBlogSettings settings)
     {
-        Html = template.Html
+        _html = template.Html
             .Replace("title", "Table of contents")
             .Replace("author", settings.DefaultAuthor)
             .Replace("date", DateTimeOffset.Now.ToString())
-            .Replace("content", GetHtml(settings.BlogName));
+            .Replace("content", GetHtml());
 
         return this;
     }
@@ -26,9 +26,9 @@ public class TableOfContents
         directory.Save(this);
     }
 
-    private string GetHtml(string blogTitle)
+    private string GetHtml()
     {
-        var posts = Posts
+        var posts = _posts
             .Where(p => !p.Header!.IsHidden)
             .Where(p => p.Header!.IsPublished)
             .OrderByDescending(p => p.Header!.Date)
@@ -37,5 +37,5 @@ public class TableOfContents
         return $"<h2>Table of contents</h2><ul>{string.Join("", posts)}</ul>";
     }
 
-    public override string ToString() => Html?.Value ?? string.Empty;
+    public override string ToString() => _html?.Value ?? string.Empty;
 }

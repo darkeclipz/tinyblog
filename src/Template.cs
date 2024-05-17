@@ -10,13 +10,12 @@ public record Html(string Value)
 
 public static class Placeholder
 {
-    public static readonly string Title = "title";
-    public static readonly string Author = "author";
-    public static readonly string Date = "date";
-    public static readonly string Content = "content";
-    public static readonly string Now = "now";
-    public static readonly string Year = "year";
-    public static readonly string Active = "active";
+    public const string Title = "title";
+    public const string Author = "author";
+    public const string Date = "date";
+    public const string Content = "content";
+    public const string Now = "now";
+    public const string Year = "year";
 }
 
 public class Template

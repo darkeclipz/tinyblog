@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.Loader;
 
 namespace TinyBlog;
 
@@ -57,13 +55,13 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         Build();
 
-        using var watcher = new System.IO.FileSystemWatcher(_settings.InputDirectory, Filter.Markdown);
+        using var watcher = new FileSystemWatcher(_settings.InputDirectory, Filter.Markdown);
         watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
         var cancellationTokenSource = new CancellationTokenSource();
         var cancellationToken = cancellationTokenSource.Token;
 
-        Console.CancelKeyPress += (sender, e) =>
+        Console.CancelKeyPress += (_, e) =>
         {
             e.Cancel = true;
             cancellationTokenSource.Cancel();
@@ -89,7 +87,7 @@ public class TinyBlogEngine(TinyBlogSettings settings)
     {
         var templateFile = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.TemplateName);
         _template = Template.Create(templateFile);
-        System.Threading.Thread.Sleep(250); // Wait for file to unlock, yes I know...
+        Thread.Sleep(250); // Wait for file to unlock, yes I know...
         Build();
     }
 

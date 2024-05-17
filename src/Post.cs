@@ -14,7 +14,6 @@ public static class PostHeaderParameter
     public const string Date = "date";
     public const string Hidden = "hidden";
     public const string Published = "published";
-    public static readonly string Active = "active";
 }
 
 public class PostHeader
@@ -22,7 +21,7 @@ public class PostHeader
     public string Title { get; private init; } = string.Empty;
     public DateTimeOffset Date { get; private init; }
     public string Author { get; private init; } = string.Empty;
-    public bool IsHidden { get; private set; } = false;
+    public bool IsHidden { get; private set; }
     public bool IsPublished { get; private init; } = true;
 
     public static PostHeader Create(string title, string author, string date, string hidden, string published)
@@ -47,7 +46,7 @@ public class Post
 
     public Post InsertIn(Template template)
     {
-        var post = Markdig.Markdown.ToHtml(Markdown?.Value ?? string.Empty);
+        var post = Markdig.Markdown.ToHtml(Markdown.Value);
 
         Html = template.Html
             .Replace(Placeholder.Title, Header?.Title ?? string.Empty)
@@ -55,38 +54,13 @@ public class Post
             .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)
             .Replace(Placeholder.Content, post)
             .Replace(Placeholder.Now, DateTimeOffset.Now.ToString())
-            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString())
-            .Replace(Placeholder.Active, "active");
-
-        var activeMatches = Regex.Match(template.Html.Value, @$"{{ isActive ({File.FileName.Name}) }}");
-        if (activeMatches.Groups.Count == 1)
-        {
-            Html = Html.Replace(activeMatches.Groups[0].Value, "active");
-        }
-
-        var allMatches = Regex.Match(template.Html.Value, @"{{ isActive (\w+) }}");
-        if (allMatches.Groups.Count == 2)
-        {
-            Html = Html.Replace(activeMatches.Groups[0].Value, string.Empty);
-        }
+            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString());
 
         return this;
     }
 
     public Post GetHeaderOrDefault(TinyBlogSettings settings)
     {
-        static bool TryGetProperty(string property, string input, out string value)
-        {
-            var match = Regex.Match(input, $"^{property}:(.*)$", RegexOptions.Multiline);
-            if (match.Groups.Count != 2)
-            {
-                value = string.Empty;
-                return false;
-            }
-            value = match.Groups[1].Value.Trim();
-            return true;
-        }
-
         if (Markdown.Value.StartsWith("---"))
         {
             var end = Markdown.Value.IndexOf("---", 3, StringComparison.Ordinal);
@@ -133,6 +107,18 @@ public class Post
         }
 
         return this;
+
+        static bool TryGetProperty(string property, string input, out string value)
+        {
+            var match = Regex.Match(input, $"^{property}:(.*)$", RegexOptions.Multiline);
+            if (match.Groups.Count != 2)
+            {
+                value = string.Empty;
+                return false;
+            }
+            value = match.Groups[1].Value.Trim();
+            return true;
+        }
     }
 
     public Post AddTo(TableOfContents tableOfContents)

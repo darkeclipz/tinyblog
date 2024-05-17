@@ -1,6 +1,7 @@
 ﻿using TinyBlog;
 using CommandLine;
 
+// ReSharper disable once RedundantNameQualifier
 CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOptions>(args)
     .MapResult(
         (InitOptions opts) =>
@@ -9,9 +10,9 @@ CommandLine.Parser.Default.ParseArguments<InitOptions, BuildOptions, WatchOption
             Run(watch: false);
             return 0;
         },
-        (BuildOptions opts) => Run(watch: false),
-        (WatchOptions opts) => Run(watch: true),
-        errs => 2);
+        (BuildOptions _) => Run(watch: false),
+        (WatchOptions _) => Run(watch: true),
+        _ => 2);
 
 static int Run(bool watch)
 {
