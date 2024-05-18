@@ -4,6 +4,8 @@
 
 The world's smallest blog engine that packs a punch.
 
+https://tinyblog.gg
+
 ## Table of Contents
 
 - [Philosophy](#philosophy)
