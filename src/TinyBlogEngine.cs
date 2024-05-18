@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Text;
 
 namespace TinyBlog;
 
 public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancellationToken)
 {
-    private readonly Directory _inputDirectory = Directory.Create(settings.InputDirectory);
-    private readonly Directory _outputDirectory = Directory.Create(settings.OutputDirectory);
+    private readonly Directory _inputDirectory = Directory.From(settings.InputDirectory);
+    private readonly Directory _outputDirectory = Directory.From(settings.OutputDirectory);
     private readonly TinyBlogSettings _settings = TinyBlogSettings.Validate(settings);
     private readonly CancellationToken _cancellationToken = cancellationToken;
 
@@ -24,7 +25,7 @@ public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancell
         CopyThemeStylesheet();
 
         var layout = Layout.Create(
-            File.Create(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.LayoutName));
+            File.From(TinyBlogSettings.ThemesFolder, settings.Theme, TinyBlogSettings.LayoutName));
         var tableOfContents = new TableOfContents();
 
         _inputDirectory
@@ -101,8 +102,8 @@ public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancell
         var currentWorkingDirectory = System.IO.Directory.GetCurrentDirectory();
         var assemblyDirectory = AppContext.BaseDirectory;
 
-        var currentDirectory = Directory.Create(currentWorkingDirectory);
-        var assemblyDir = Directory.Create(assemblyDirectory);
+        var currentDirectory = Directory.From(currentWorkingDirectory);
+        var assemblyDir = Directory.From(assemblyDirectory);
 
         if (!options.Force)
         {
@@ -112,13 +113,13 @@ public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancell
         var defaultSettings = TinyBlogSettings.CreateDefaultConfiguration(currentDirectory, options);
         Logger.LogInfo("Creating default configuration file.");
 
-        var sourceInputDirectory = Directory.Create(assemblyDir.AbsolutePath, defaultSettings.InputDirectory);
-        var targetInputDirectory = Directory.Create(currentDirectory.AbsolutePath, defaultSettings.InputDirectory);
+        var sourceInputDirectory = Directory.From(assemblyDir.AbsolutePath, defaultSettings.InputDirectory);
+        var targetInputDirectory = Directory.From(currentDirectory.AbsolutePath, defaultSettings.InputDirectory);
         sourceInputDirectory.CopyFilesRecursively(targetInputDirectory, replace: options.Force);
         Logger.LogCopy("Creating src directory.");
 
-        var sourceThemes = Directory.Create(assemblyDir.AbsolutePath, TinyBlogSettings.ThemesFolder);
-        var targetThemes = Directory.Create(currentDirectory.AbsolutePath, TinyBlogSettings.ThemesFolder);
+        var sourceThemes = Directory.From(assemblyDir.AbsolutePath, TinyBlogSettings.ThemesFolder);
+        var targetThemes = Directory.From(currentDirectory.AbsolutePath, TinyBlogSettings.ThemesFolder);
         sourceThemes.CopyFilesRecursively(targetThemes, replace: options.Force);
         Logger.LogCopy("Creating themes directory.");
 
@@ -139,8 +140,16 @@ public class TinyBlogEngine(TinyBlogSettings settings, CancellationToken cancell
 
     private void CopyThemeStylesheet()
     {
-        var stylesheet = File.Create(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.StylesheetName);
+        var stylesheet = File.From(TinyBlogSettings.ThemesFolder, _settings.Theme, TinyBlogSettings.StylesheetName);
         stylesheet.CopyTo(_outputDirectory);
         Logger.LogCopy(stylesheet.AbsolutePath);
+    }
+
+    public static TinyBlogEngine Create(CancellationToken cancellationToken)
+    {
+        var currentWorkingDirectory = Directory.From(System.IO.Directory.GetCurrentDirectory());
+        Guard.Against.MissingSettings(currentWorkingDirectory);
+        var settings = TinyBlogSettings.From(currentWorkingDirectory);
+        return new TinyBlogEngine(settings, cancellationToken);
     }
 }

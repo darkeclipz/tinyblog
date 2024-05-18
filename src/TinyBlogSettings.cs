@@ -14,7 +14,7 @@ public class TinyBlogSettings
 
     public static TinyBlogSettings From(Directory directory)
     {
-        var settingsFile = File.Create(Path.Combine(directory.AbsolutePath, SettingsFileName));
+        var settingsFile = File.From(Path.Combine(directory.AbsolutePath, SettingsFileName));
         var yml = settingsFile.ReadAllText();
 
         var deserializer = new DeserializerBuilder()

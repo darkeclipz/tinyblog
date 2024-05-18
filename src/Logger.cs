@@ -12,6 +12,7 @@ public static class Logger
     
     public static void LogBuild(string message) => Log(LogCategory.Build, message);
     public static void LogInfo(string message) => Log(LogCategory.Info, message);
+    public static void LogCreate(string message) => Log(LogCategory.Create, message);
     public static void LogCopy(string message) => Log(LogCategory.Copy, message);
     public static void LogSuccess(string message) => Log(LogCategory.Success, message);
     public static void LogWatch(string message) => Log(LogCategory.Watch, message);
@@ -57,6 +58,7 @@ public enum LogCategory
 {
     Build,
     Info,
+    Create,
     Copy,
     Success,
     Watch,

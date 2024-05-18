@@ -1,54 +1,78 @@
 ![Logo](logo/github-logo.png)
 
-The world's smallest blog engine, that yet packs a punch.
+# tinyblog
 
-## Philosophy behind tinyblog
+The world's smallest blog engine that packs a punch.
 
-The philosophy behind tinyblog is that it should be as simple and elegant as possible, but yet provide capable functionalities.
+## Table of Contents
 
-This project is mainly inspired by Hugo. However, after being rather frustrated with how advanced Hugo can be, I opted to create a barebone version of it. It is not goal to recreate Hugo! The **goal is to create a blogging engine that is easy to understand and simple to maintain**. You should be able to understand how it works and get a blog up and running in less than 5 minutes.
+- [Philosophy](#philosophy)
+- [Features](#features)
+- [Installation](#installation)
+- [Releases](#releases)
+- [CLI Commands](#cli-commands)
+- [Directory Structure](#directory-structure)
+- [Usage Examples](#usage-examples)
+- [Open Bugs](#open-bugs)
+- [Used Packages](#used-packages)
+- [Contributions](#contributions)
+- [License](#license)
+
+## Philosophy
+
+The philosophy behind tinyblog is simplicity and elegance while offering powerful functionality. Inspired by Hugo, tinyblog aims to be a minimalistic alternative. The goal is not to recreate Hugo but to provide an easy-to-understand and maintainable blogging engine. You should be able to get a blog up and running in less than 5 minutes.
 
 ## Features
 
-tinyblogs has the following features.
+tinyblog includes the following features:
 
- * CLI tool
- * Markdown support
- * HMTL support
- * highlight.js
- * MathJax
- * Mermaid
- * And any other JS library you want to integrate...
+- CLI tool
+- Markdown support
+- HTML support
+- highlight.js
+- MathJax
+- Mermaid
+- Support for any additional JS libraries you want to integrate
 
 ## Installation
 
-Installing tinyblog is as easy as following the steps below.
+Installing tinyblog is straightforward:
 
- 1. Download the latest release and extract this into a folder somewhere.
- 3. Add that directory to your `PATH` environment variable.
- 4. Create a new empty folder and run `tinyblog init` .
- 5. Configure your blog in the `settings.yml` file.
- 6. Build the blog with `tinyblog build`.
-   
-Delete the directory to uninstall it.
+1. **Download**: Download the latest release from the [Releases](#releases) section.
+2. **Extract**: Extract the downloaded file to a folder of your choice.
+3. **Add to PATH**: Add the extracted directory to your `PATH` environment variable.
+    - **Windows**:
+        - Open Start Search, type in "env", and select "Edit the system environment variables".
+        - Click the "Environment Variables" button.
+        - Under "System Variables", find the `PATH` variable, select it, and click "Edit".
+        - Add the path to the tinyblog folder.
+    - **macOS/Linux**:
+        - Open your terminal.
+        - Edit your shell profile (`~/.bashrc`, `~/.zshrc`, etc.) and add `export PATH=$PATH:/path/to/tinyblog`.
+        - Run `source ~/.bashrc` (or the appropriate command for your shell).
+4. **Initialize Blog**: Create a new empty folder and run `tinyblog init`.
+5. **Configure Blog**: Edit the `settings.yml` file to configure your blog.
+6. **Build Blog**: Run `tinyblog build` to build your blog.
+
+To uninstall, simply delete the directory.
 
 ## Releases
 
- * [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.1.1/tinyblog-2.1.1.zip)
+- [Download the latest release (windows-x64)](https://github.com/darkeclipz/tinyblog/releases/download/release-2.1.1/tinyblog-2.1.1.zip)
 
-## CLI commands
+## CLI Commands
 
 The tinyblog CLI supports the following commands:
 
- 1. `tinyblog init` initializes a new blog in the current directory.
- 2. `tinyblog build` builds the blog in the current directory.
- 3. `tinyblog watch` watches the current directory for any changes and builds the change file.
+1. `tinyblog init`: Initializes a new blog in the current directory.
+2. `tinyblog build`: Builds the blog in the current directory.
+3. `tinyblog watch`: Watches the current directory for changes and builds the changed files.
 
-**Warning:** Theme changes require a restart of the watch process.
+**Note:** Theme changes require restarting the watch process.
 
-## Directory structure
+## Directory Structure
 
-The directory structure of a blog is defined in the following way:
+The directory structure for a blog is as follows:
 
 ```text
 $ root
@@ -64,31 +88,100 @@ $ root
         └── style.css
 ```
 
- * The `settings.yml` file defines the settings, and helps tinyblog understand that this folder is a tinyblog folder.
- * All the files from `src` are copied to the `dist` folder.
- * All files with the `.md` extensions are converted to `.html`.
- * The `layout.html` is used for the given theme.
- * The `style.css` is copied from the theme folder into the `includes` folder.
+- `settings.yml`: Defines the settings and helps tinyblog recognize the folder.
+- `src`: Contains source files, copied to the `dist` folder.
+- Files with the `.md` extension are converted to `.html`.
+- `layout.html`: Used for the given theme.
+- `style.css`: Copied from the theme folder to the `includes` folder.
 
-## Open bugs
+## Usage Examples
 
-There are no open bugs currently.
+### Sample `settings.yml`
 
-## Used packages
+```yaml
+blogName: My Favorite Blog
+inputDirectory: src
+outputDirectory: dist
+theme: default
+defaultAuthor: John Doe
+generateTableOfContents: true
+```
 
-TinyBlog would not have been possible without the following open source projects:
+### Sample Markdown Post
+
+Create a file `src/post1.md`:
+
+```markdown
+---
+title: About
+date: 2021-09-01 12:00:00 +0000
+author: Jane Doe
+hidden: false
+published: true
+---
+
+# My first post
+
+This is my first blog post!
+```
+
+Run `tinyblog build` to see the output in the `dist` folder.
+
+Note that:
  
- * **Markdig** for parsing Markdown files and converting them to HTML.
- * **CommandLineParser** for generating an easy CLI tool with commands and options.
- * **highlight.js** for syntax highlighting in code blocks.
- * **MathJax** for formatting and displaying mathematical equations.
- * **Mermaid** for formatting and displaying diagrams.
- * **YamlDotNet** for settings management.
+ * If the `author` field is left out the default author is used as defined in the settings.
+ * If the `date` field is left out it defaults to the current date and time.
+ * If the `hidden` field is set to `true`, the post is not included in the table of contents.
+ * If the `published` field is set to `false` the post is not saved in the `dist` folder.
 
-## Constributions
+### Creating a new theme
+
+To create a new theme:
+
+ 1. Create a new folder in the `themes` directory.
+ 2. Add a `layout.html` file.
+ 3. Add a `style.css` file.
+ 4. Change the `theme` field in the `settings.yml` file to the new theme name.
+ 5. Run `tinyblog build` to see the changes.
+
+### Layout placeholders
+
+The following placeholders can be used in the `layout.html` file:
+
+- `{{ title }}`: The title of the post.
+- `{{ author }}`: The author of the post.
+- `{{ date }}`: The date of the post.
+- `{{ content }}`: The content of the post. (Required)
+- `{{ now }}`: The current date time.
+- `{{ year}}`: The current year.
+
+## Open Bugs
+
+There are no open bugs at the moment.
+
+## Used Packages
+
+Tinyblog is made possible by the following open source projects:
+
+- **Markdig**: For parsing and converting Markdown files to HTML.
+- **CommandLineParser**: For creating a user-friendly CLI with commands and options.
+- **highlight.js**: For syntax highlighting in code blocks.
+- **MathJax**: For rendering mathematical equations.
+- **Mermaid**: For creating diagrams.
+- **YamlDotNet**: For managing settings.
+
+## Contributions
 
 Feel free to create a pull request. 😊
 
-## Licence
+### Contribution Guidelines
+
+- Fork the repository.
+- Create a new branch (`git checkout -b feature-branch`).
+- Commit your changes (`git commit -am 'Add new feature'`).
+- Push to the branch (`git push origin feature-branch`).
+- Create a new Pull Request.
+
+## License
 
 TBD.

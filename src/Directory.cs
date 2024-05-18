@@ -5,7 +5,7 @@ public class Directory
     public string Name { get; private set; } = string.Empty;
     public string AbsolutePath { get; private init; } = string.Empty;
 
-    public static Directory Create(string path)
+    public static Directory From(string path)
     {
         if (!System.IO.Directory.Exists(path))
         {
@@ -19,16 +19,16 @@ public class Directory
         };
     }
     
-    public static Directory Create(params string[] path)
+    public static Directory From(params string[] path)
     {
-        return Create(System.IO.Path.Combine(path));
+        return From(System.IO.Path.Combine(path));
     }
 
     public IEnumerable<File> EnumerateFiles(string searchPattern, SearchOption searchOption)
     {
         return System.IO.Directory
             .EnumerateFiles(AbsolutePath, searchPattern, searchOption)
-            .Select(File.Create);
+            .Select(File.From);
     }
 
     public void CopyFilesRecursively(Directory to, bool replace)
