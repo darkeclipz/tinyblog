@@ -1,5 +1,5 @@
 ---
-title: Let's build the smallest blog engine you can imagine
+title: The worlds smallest blog engine
 author: Lars Rotgers
 hidden: false
 ---
@@ -139,7 +139,7 @@ The following placeholders can be used in the `layout.html` file:
 - `{{ date }}`: The date of the post.
 - `{{ content }}`: The content of the post. (Required)
 - `{{ now }}`: The current date time.
-- `{{ year}}`: The current year.
+- `{{ year }}`: The current year.
 
 ## FAQ
 

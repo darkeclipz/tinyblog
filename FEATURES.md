@@ -1,8 +1,30 @@
-# DESIGN
+# Possible New Features
 
+## Menu
 
+Possibility to define a menu in the `settings.yml` which is then available with the {{ menu }} placeholder, and rendered as the following HTML fragment:
 
-## Possible placeholders
+```html
+<ul>
+    <li>
+        <a href="#link1">Link 1</a>
+    </li>
+    <li>
+        <a href="#link2">Link 2</a>
+    </li>
+    <li>
+        <a href="#link3">Link 3</a>
+    </li>
+</ul>
+```
+
+The user can then style the menu to their likings using CSS.
+
+> A user can just add a menu in `layout.html`, this isn't needed.
+
+## Extended placeholders
+
+List list of possible place holders is:
 
 - `{{.Title}}`: The title of the post.
 - `{{.Author}}`: The author of the post.
@@ -51,3 +73,33 @@
 - `{{.PostNextIndex}}`: The index of the next post.
 - `{{.PostPreviousTableOfContents}}`: The table of contents for the previous post.
 - `{{.PostNextTableOfContents}}`: The table of contents for the next post.
+
+## A `new` command that creates files
+
+> Not needed, just create a new file yourself you lazy ....
+
+## Includes
+
+Allow the inclusion of partial markdown fragments (note that a markdown file can also just be HTML).
+
+{{ include ___.md }}
+
+or just read HTML from the `inputDirectory`:
+
+{{ include ___.html }}
+
+### Include arguments
+
+Add arguments to inclusions.
+
+```md
+<div class="badge">
+    {{ param1 }}
+</div>
+```
+
+```md
+{{ include badge.md "Hello world!" }}
+```
+
+Is this really necessary???
