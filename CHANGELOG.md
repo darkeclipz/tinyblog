@@ -1,8 +1,9 @@
----
-title: Change log
-author: Lars Rotgers
-hidden: false
----
+# Change log
+
+## tinyblog-2.1.2
+
+ * Implemented the `serve` command in the CLI that will build, watch, and host the blog. 
+   * Default port is 8080.
 
 ## tinyblog-2.1.1
 

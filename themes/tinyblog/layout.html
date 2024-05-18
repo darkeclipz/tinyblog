@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?cb={{ cache_buster }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13,17 +13,6 @@
 <body class="fadeIn">
     <h1>tinyblog</h1>
     <h3>Let's build the smallest blog engine you can imagine</h3>
-
-    <hr/>
-        <nav>
-            <ul>
-                <li><a href="about-tiny-blog.html" class="{{ isActive about-tiny-blog }}">Home</a></li>
-                <li><a href="installation.html" class="{{ isActive installation }}">Installation</a></li>
-                <li><a href="releases.html" class="{{ isActive releases }}">Releases</a></li>
-                <li><a href="changelog.html" class="{{ isActive changelog }}">Change log</a></li>
-                <li><a href="about.html" class="{{ isActive about }}">About</a></li>
-            </ul>
-        </nav>
     <hr/>
 
     {{ content }}

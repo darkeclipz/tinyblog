@@ -3,4 +3,4 @@ inputDirectory: docs_src
 outputDirectory: docs
 theme: tinyblog
 defaultAuthor: Lars Rotgers
-generateTableOfContents: true
+generateTableOfContents: false

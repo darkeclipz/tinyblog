@@ -13,12 +13,13 @@ public class TableOfContents
     public TableOfContents InsertIn(Layout layout, TinyBlogSettings settings)
     {
         _html = layout.Html
-            .Replace("title", "Table of contents")
-            .Replace("author", settings.DefaultAuthor)
-            .Replace("date", DateTimeOffset.Now.ToString())
-            .Replace("content", GetHtml())
-            .Replace("now", DateTimeOffset.Now.ToString())
-            .Replace("year", DateTimeOffset.Now.Year.ToString());
+            .Replace(Placeholder.Title, "Table of contents")
+            .Replace(Placeholder.Author, settings.DefaultAuthor)
+            .Replace(Placeholder.Date, DateTimeOffset.Now.ToString())
+            .Replace(Placeholder.Content, GetHtml())
+            .Replace(Placeholder.Now, DateTimeOffset.Now.ToString())
+            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString())
+            .Replace(Placeholder.CacheBuster, DateTimeOffset.Now.Ticks.ToString());
 
         return this;
     }

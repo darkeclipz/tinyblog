@@ -54,7 +54,8 @@ public class Post
             .Replace(Placeholder.Date, Header?.Date.ToString() ?? string.Empty)
             .Replace(Placeholder.Content, post)
             .Replace(Placeholder.Now, DateTimeOffset.Now.ToString())
-            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString());
+            .Replace(Placeholder.Year, DateTimeOffset.Now.Year.ToString())
+            .Replace(Placeholder.CacheBuster, DateTimeOffset.Now.Ticks.ToString());
 
         return this;
     }

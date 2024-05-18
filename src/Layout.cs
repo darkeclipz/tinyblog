@@ -16,6 +16,7 @@ public static class Placeholder
     public const string Content = "content";
     public const string Now = "now";
     public const string Year = "year";
+    public const string CacheBuster = "cache_buster";
 }
 
 public class Layout

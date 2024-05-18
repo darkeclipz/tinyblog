@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table of contents</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Let's build the smallest blog engine you can imagine</title>
+    <link rel="stylesheet" href="style.css?cb=638516277764643620">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13,29 +13,171 @@
 <body class="fadeIn">
     <h1>tinyblog</h1>
     <h3>Let's build the smallest blog engine you can imagine</h3>
-
-    <hr/>
-        <nav>
-            <ul>
-                <li><a href="about-tiny-blog.html" class="{{ isActive about-tiny-blog }}">Home</a></li>
-                <li><a href="installation.html" class="{{ isActive installation }}">Installation</a></li>
-                <li><a href="releases.html" class="{{ isActive releases }}">Releases</a></li>
-                <li><a href="changelog.html" class="{{ isActive changelog }}">Change log</a></li>
-                <li><a href="about.html" class="{{ isActive about }}">About</a></li>
-            </ul>
-        </nav>
     <hr/>
 
-    <h2>Table of contents</h2><ul><li><a href="about-tiny-blog.html">Let's build the smallest blog engine you can imagine</a></li><li><a href="changelog.html">Change log</a></li><li><a href="post1.html">Hello world</a></li></ul>
+    <h2>Philosophy</h2>
+<p>The philosophy behind tinyblog is simplicity and elegance while offering powerful functionality. Inspired by Hugo, tinyblog aims to be a minimalistic alternative. The goal is not to recreate Hugo but to provide an easy-to-understand and maintainable blogging engine. You should be able to get a blog up and running in less than 5 minutes.</p>
+<h2>Features</h2>
+<p>tinyblog includes the following features:</p>
+<ul>
+<li>CLI tool</li>
+<li>Markdown support</li>
+<li>HTML support</li>
+<li>highlight.js</li>
+<li>MathJax</li>
+<li>Mermaid</li>
+<li>Support for any additional JS libraries you want to integrate</li>
+</ul>
+<h2>Installation</h2>
+<p>Installing tinyblog is straightforward:</p>
+<ol>
+<li><strong>Download</strong>: Download the latest release from the <a href="#releases">Releases</a> section.</li>
+<li><strong>Extract</strong>: Extract the downloaded file to a folder of your choice.</li>
+<li><strong>Add to PATH</strong>: Add the extracted directory to your <code>PATH</code> environment variable.
+<ul>
+<li><strong>Windows</strong>:
+<ul>
+<li>Open Start Search, type in &quot;env&quot;, and select &quot;Edit the system environment variables&quot;.</li>
+<li>Click the &quot;Environment Variables&quot; button.</li>
+<li>Under &quot;System Variables&quot;, find the <code>PATH</code> variable, select it, and click &quot;Edit&quot;.</li>
+<li>Add the path to the tinyblog folder.</li>
+</ul>
+</li>
+<li><strong>macOS/Linux</strong>:
+<ul>
+<li>Open your terminal.</li>
+<li>Edit your shell profile (<code>~/.bashrc</code>, <code>~/.zshrc</code>, etc.) and add <code>export PATH=$PATH:/path/to/tinyblog</code>.</li>
+<li>Run <code>source ~/.bashrc</code> (or the appropriate command for your shell).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Initialize Blog</strong>: Create a new empty folder and run <code>tinyblog init</code>.</li>
+<li><strong>Configure Blog</strong>: Edit the <code>settings.yml</code> file to configure your blog.</li>
+<li><strong>Build Blog</strong>: Run <code>tinyblog build</code> to build your blog.</li>
+</ol>
+<p>To uninstall, simply delete the directory.</p>
+<h2>Releases</h2>
+<ul>
+<li><a href="https://github.com/darkeclipz/tinyblog/releases/download/release-2.1.1/tinyblog-2.1.1.zip">Download the latest release (windows-x64)</a></li>
+</ul>
+<h2>CLI Commands</h2>
+<p>The tinyblog CLI supports the following commands:</p>
+<ol>
+<li><code>tinyblog init</code>: Initializes a new blog in the current directory.</li>
+<li><code>tinyblog build</code>: Builds the blog in the current directory.</li>
+<li><code>tinyblog watch</code>: Watches the current directory for changes and builds the changed files.</li>
+</ol>
+<p><strong>Note:</strong> Theme changes require restarting the watch process.</p>
+<h2>Directory Structure</h2>
+<p>The directory structure for a blog is as follows:</p>
+<pre><code class="language-text">$ root
+├── settings.yml
+├── src
+│   └── post1.md
+├── dist
+│   ├── index.html
+│   └── post1.html
+└── themes
+    └── default
+        ├── layout.html
+        └── style.css
+</code></pre>
+<ul>
+<li><code>settings.yml</code>: Defines the settings and helps tinyblog recognize the folder.</li>
+<li><code>src</code>: Contains source files, copied to the <code>dist</code> folder.</li>
+<li>Files with the <code>.md</code> extension are converted to <code>.html</code>.</li>
+<li><code>layout.html</code>: Used for the given theme.</li>
+<li><code>style.css</code>: Copied from the theme folder to the <code>includes</code> folder.</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Sample <code>settings.yml</code></h3>
+<pre><code class="language-yaml">blogName: My Favorite Blog
+inputDirectory: src
+outputDirectory: dist
+theme: default
+defaultAuthor: John Doe
+generateTableOfContents: true
+</code></pre>
+<h3>Sample Markdown Post</h3>
+<p>Create a file <code>src/post1.md</code>:</p>
+<pre><code class="language-markdown">---
+title: About
+date: 2021-09-01 12:00:00 +0000
+author: Jane Doe
+hidden: false
+published: true
+---
+
+# My first post
+
+This is my first blog post!
+</code></pre>
+<p>Run <code>tinyblog build</code> to see the output in the <code>dist</code> folder.</p>
+<p>Note that:</p>
+<ul>
+<li>If the <code>author</code> field is left out the default author is used as defined in the settings.</li>
+<li>If the <code>date</code> field is left out it defaults to the current date and time.</li>
+<li>If the <code>hidden</code> field is set to <code>true</code>, the post is not included in the table of contents.</li>
+<li>If the <code>published</code> field is set to <code>false</code> the post is not saved in the <code>dist</code> folder.</li>
+</ul>
+<h3>Creating a new theme</h3>
+<p>To create a new theme:</p>
+<ol>
+<li>Create a new folder in the <code>themes</code> directory.</li>
+<li>Add a <code>layout.html</code> file.</li>
+<li>Add a <code>style.css</code> file.</li>
+<li>Change the <code>theme</code> field in the <code>settings.yml</code> file to the new theme name.</li>
+<li>Run <code>tinyblog build</code> to see the changes.</li>
+</ol>
+<h3>Layout placeholders</h3>
+<p>The following placeholders can be used in the <code>layout.html</code> file:</p>
+<ul>
+<li><code>{{ title }}</code>: The title of the post.</li>
+<li><code>{{ author }}</code>: The author of the post.</li>
+<li><code>{{ date }}</code>: The date of the post.</li>
+<li><code>{{ content }}</code>: The content of the post. (Required)</li>
+<li><code>18/05/2024 11:16:16 +02:00</code>: The current date time.</li>
+<li><code>{{ year}}</code>: The current year.</li>
+</ul>
+<h2>FAQ</h2>
+<ol>
+<li>How do I create my own index page? Disable the table of contents in the <code>settings.yml</code> and create a file <code>index.md</code>.</li>
+</ol>
+<h2>Open Bugs</h2>
+<p>There are no open bugs at the moment.</p>
+<h2>Used Packages</h2>
+<p>Tinyblog is made possible by the following open source projects:</p>
+<ul>
+<li><strong>Markdig</strong>: For parsing and converting Markdown files to HTML.</li>
+<li><strong>CommandLineParser</strong>: For creating a user-friendly CLI with commands and options.</li>
+<li><strong>highlight.js</strong>: For syntax highlighting in code blocks.</li>
+<li><strong>MathJax</strong>: For rendering mathematical equations.</li>
+<li><strong>Mermaid</strong>: For creating diagrams.</li>
+<li><strong>YamlDotNet</strong>: For managing settings.</li>
+</ul>
+<h2>Contributions</h2>
+<p>Feel free to create a pull request. 😊</p>
+<h3>Contribution Guidelines</h3>
+<ul>
+<li>Fork the repository.</li>
+<li>Create a new branch (<code>git checkout -b feature-branch</code>).</li>
+<li>Commit your changes (<code>git commit -am 'Add new feature'</code>).</li>
+<li>Push to the branch (<code>git push origin feature-branch</code>).</li>
+<li>Create a new Pull Request.</li>
+</ul>
+<h2>License</h2>
+<p>TBD.</p>
+
 
     <hr />
     
     <div>
-        <center>Copyright {{ year }}. tinyblog.</center> 
+        <center>Copyright 2024. tinyblog.</center> 
     </div>
 
     <div class="last-update">
-        Last update: {{ now }}
+        Last update: 18/05/2024 11:16:16 +02:00
     </div>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>

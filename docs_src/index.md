@@ -1,23 +1,8 @@
-![Logo](logo/github-logo.png)
-
-# tinyblog
-
-The world's smallest blog engine that packs a punch.
-
-## Table of Contents
-
-- [Philosophy](#philosophy)
-- [Features](#features)
-- [Installation](#installation)
-- [Releases](#releases)
-- [CLI Commands](#cli-commands)
-- [Directory Structure](#directory-structure)
-- [Usage Examples](#usage-examples)
-- [FAQ](#faq)
-- [Open Bugs](#open-bugs)
-- [Used Packages](#used-packages)
-- [Contributions](#contributions)
-- [License](#license)
+---
+title: Let's build the smallest blog engine you can imagine
+author: Lars Rotgers
+hidden: false
+---
 
 ## Philosophy
 
@@ -163,6 +148,7 @@ The following placeholders can be used in the `layout.html` file:
 ## Open Bugs
 
 There are no open bugs at the moment.
+
 
 ## Used Packages
 
