@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>blog</PackageTags>
     <FileVersion>2.0.0</FileVersion>
-    <Version>2.1.1</Version>
+    <Version>2.1.2</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>TinyBlogStrongNameKey.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
